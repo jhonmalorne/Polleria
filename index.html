@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<header>
-  <img src="https://raw.githubusercontent.com/jhonmalorne/Polleria/main/logopolleria.png" alt="Logo de D'Rosco" style="width: 150px; height: auto;">
-  <h1>D'Rosco - Pedidos Online</h1>
-  <p>📍 Dirección: Pachacutec, Ventanilla, Calle Inca Huasi</p>
-  <p>📞 WhatsApp: <a href="https://wa.me/994173144" style="color: white; text-decoration: underline;">994173144</a></p>
-</header>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D'Rosco - Pedidos Online</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -20,32 +16,50 @@
       color: white;
       padding: 10px;
       text-align: center;
-      img {
-  display: block;
-  margin: 0 auto;
-  border-radius: 10px; /* Esquinas redondeadas */
-}
+    }
+    header img {
+      display: block;
+      margin: 0 auto;
+      border-radius: 10px; /* Esquinas redondeadas */
+      width: 150px;
+      height: auto;
     }
     main {
       padding: 20px;
     }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
     .menu-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      padding: 10px;
-      background: #fff;
+      text-align: center;
+      padding: 15px;
+      background-color: #fff;
       border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .menu-item img {
+      width: 100px;
+      height: auto;
+      margin-bottom: 10px;
       border-radius: 5px;
     }
     .menu-item span {
+      display: block;
+      font-size: 16px;
       font-weight: bold;
+      margin-bottom: 10px;
       color: #b22222;
     }
     .menu-item input {
       width: 50px;
       text-align: center;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
     .total {
       text-align: right;
@@ -72,18 +86,27 @@
   </style>
 </head>
 <body>
+  <header>
+    <img src="https://raw.githubusercontent.com/jhonmalorne/Polleria/main/logopolleria.png" alt="Logo de D'Rosco">
+    <h1>D'Rosco - Pedidos Online</h1>
+    <p>📍 Dirección: Pachacutec, Ventanilla, Calle Inca Huasi</p>
+    <p>📞 WhatsApp: <a href="https://wa.me/994173144" style="color: white; text-decoration: underline;">994173144</a></p>
+  </header>
   <main>
     <h2>Menú</h2>
-    <div id="menu">
+    <div class="menu-grid">
       <div class="menu-item">
+        <img src="https://raw.githubusercontent.com/jhonmalorne/Polleria/main/polloentero.png" alt="Pollo Entero">
         <span>1 Pollo Entero - S/50</span>
         <input type="number" min="0" id="pollo-entero" placeholder="0" onchange="calcularTotal()">
       </div>
       <div class="menu-item">
+        <img src="https://raw.githubusercontent.com/jhonmalorne/Polleria/main/mediopollo.png" alt="1/2 Pollo">
         <span>1/2 Pollo - S/28</span>
         <input type="number" min="0" id="medio-pollo" placeholder="0" onchange="calcularTotal()">
       </div>
       <div class="menu-item">
+        <img src="https://raw.githubusercontent.com/jhonmalorne/Polleria/main/cuartodepollo.png" alt="1/4 Pollo">
         <span>1/4 Pollo - S/15</span>
         <input type="number" min="0" id="cuarto-pollo" placeholder="0" onchange="calcularTotal()">
       </div>
@@ -125,7 +148,6 @@
       const direccion = document.getElementById('direccion').value;
       const ubicacion = document.getElementById('ubicacion').value;
       const notas = document.getElementById('notas').value;
-      const voucher = document.getElementById('voucher').files[0];
       const polloEntero = document.getElementById('pollo-entero').value || 0;
       const medioPollo = document.getElementById('medio-pollo').value || 0;
       const cuartoPollo = document.getElementById('cuarto-pollo').value || 0;
