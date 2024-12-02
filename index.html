@@ -12,7 +12,7 @@
       background-color: #f8f8f8;
     }
     header {
-      background-color: #d35400;
+      background-color: #b22222;
       color: white;
       padding: 10px;
       text-align: center;
@@ -23,6 +23,7 @@
     .menu-item {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 15px;
       padding: 10px;
       background: #fff;
@@ -31,15 +32,23 @@
     }
     .menu-item span {
       font-weight: bold;
+      color: #b22222;
     }
     .menu-item input {
       width: 50px;
       text-align: center;
     }
+    .total {
+      text-align: right;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #b22222;
+    }
     .button {
       display: inline-block;
       margin-top: 20px;
-      background-color: #d35400;
+      background-color: #b22222;
       color: white;
       padding: 10px 20px;
       text-align: center;
@@ -49,7 +58,7 @@
       cursor: pointer;
     }
     .button:hover {
-      background-color: #e67e22;
+      background-color: #d32f2f;
     }
   </style>
 </head>
@@ -64,47 +73,72 @@
     <div id="menu">
       <div class="menu-item">
         <span>1 Pollo Entero - S/50</span>
-        <input type="number" min="0" id="pollo-entero" placeholder="0">
+        <input type="number" min="0" id="pollo-entero" placeholder="0" onchange="calcularTotal()">
       </div>
       <div class="menu-item">
         <span>1/2 Pollo - S/28</span>
-        <input type="number" min="0" id="medio-pollo" placeholder="0">
+        <input type="number" min="0" id="medio-pollo" placeholder="0" onchange="calcularTotal()">
       </div>
       <div class="menu-item">
         <span>1/4 Pollo - S/15</span>
-        <input type="number" min="0" id="cuarto-pollo" placeholder="0">
+        <input type="number" min="0" id="cuarto-pollo" placeholder="0" onchange="calcularTotal()">
       </div>
+    </div>
+    <div class="total">
+      Total: S/<span id="total">0.00</span>
     </div>
     <h2>Detalles del Pedido</h2>
     <form id="pedido-form">
       <label for="nombre">Nombre:</label><br>
       <input type="text" id="nombre" required><br><br>
-      <label for="direccion">Dirección:</label><br>
+      <label for="direccion">Dirección (Av./Calle, Nº de casa):</label><br>
       <input type="text" id="direccion" required><br><br>
+      <label for="ubicacion">Link de Ubicación (Google Maps):</label><br>
+      <input type="url" id="ubicacion" placeholder="https://maps.google.com"><br><br>
+      <label for="voucher">Adjuntar Voucher de Pago:</label><br>
+      <input type="file" id="voucher" accept="image/*"><br><br>
       <label for="notas">Notas Adicionales:</label><br>
       <textarea id="notas" rows="3"></textarea><br><br>
       <button type="button" class="button" onclick="enviarPedido()">Enviar Pedido</button>
     </form>
   </main>
   <script>
-    function enviarPedido() {
-      const nombre = document.getElementById('nombre').value;
-      const direccion = document.getElementById('direccion').value;
-      const notas = document.getElementById('notas').value;
+    function calcularTotal() {
+      const precioEntero = 50;
+      const precioMedio = 28;
+      const precioCuarto = 15;
+
       const polloEntero = document.getElementById('pollo-entero').value || 0;
       const medioPollo = document.getElementById('medio-pollo').value || 0;
       const cuartoPollo = document.getElementById('cuarto-pollo').value || 0;
+
+      const total = (polloEntero * precioEntero) + (medioPollo * precioMedio) + (cuartoPollo * precioCuarto);
+      document.getElementById('total').innerText = total.toFixed(2);
+    }
+
+    function enviarPedido() {
+      const nombre = document.getElementById('nombre').value;
+      const direccion = document.getElementById('direccion').value;
+      const ubicacion = document.getElementById('ubicacion').value;
+      const notas = document.getElementById('notas').value;
+      const voucher = document.getElementById('voucher').files[0];
+      const polloEntero = document.getElementById('pollo-entero').value || 0;
+      const medioPollo = document.getElementById('medio-pollo').value || 0;
+      const cuartoPollo = document.getElementById('cuarto-pollo').value || 0;
+      const total = document.getElementById('total').innerText;
 
       if (!nombre || !direccion) {
         alert('Por favor, completa los campos de nombre y dirección.');
         return;
       }
 
-      const mensaje = `Hola, soy ${nombre}. Quiero pedir:\n` +
+      let mensaje = `Hola, soy ${nombre}. Quiero pedir:\n` +
         `- ${polloEntero} Pollo(s) Entero(s)\n` +
         `- ${medioPollo} Medio(s) Pollo(s)\n` +
         `- ${cuartoPollo} Cuarto(s) Pollo(s)\n` +
+        `Total: S/${total}\n` +
         `Dirección: ${direccion}\n` +
+        `Ubicación: ${ubicacion || "No proporcionada"}\n` +
         `Notas: ${notas}`;
 
       const whatsappUrl = `https://wa.me/994173144?text=${encodeURIComponent(mensaje)}`;
