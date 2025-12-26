@@ -3,229 +3,469 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambo - Dulces, Postres y Panadería | Los Guayos, Carabobo</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Tambo - Dulces y Panadería | Los Guayos, Carabobo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #D7BDE2 0%, #E8DAEF 100%); color: #333; }
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            background: linear-gradient(135deg, #D7BDE2 0%, #E8DAEF 100%); 
+            color: #333; 
+            line-height: 1.6;
+        }
         
-        .header { background: linear-gradient(90deg, #4CAF50, #45a049); color: white; padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .header h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
-        .location { font-size: 0.9rem; opacity: 0.9; }
+        .header { 
+            background: linear-gradient(90deg, #4CAF50, #45a049); 
+            color: white; 
+            padding: 1.5rem; 
+            text-align: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+        }
+        .header h1 { font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 0.5rem; }
+        .location { font-size: 0.95rem; opacity: 0.95; }
         
-        .currency-selector { background: rgba(255,255,255,0.2); padding: 0.8rem; margin: 1rem auto; max-width: 400px; border-radius: 25px; display: flex; justify-content: center; align-items: center; gap: 1rem; backdrop-filter: blur(10px); }
-        .currency-btn { background: white; border: none; padding: 0.6rem 1.2rem; border-radius: 20px; cursor: pointer; font-weight: bold; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .currency-btn.active { background: #4CAF50; color: white; }
-        .rate-display { color: white; font-weight: bold; font-size: 0.95rem; }
+        .currency-selector { 
+            background: rgba(255,255,255,0.15); 
+            padding: 1rem; 
+            margin: 1rem auto; 
+            max-width: 400px; 
+            border-radius: 30px; 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 0.5rem; 
+            backdrop-filter: blur(15px); 
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .currency-btn { 
+            background: white; 
+            border: none; 
+            padding: 0.7rem 1.3rem; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: all 0.3s; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1); 
+            font-size: 0.95rem;
+        }
+        .currency-btn.active { background: #4CAF50 !important; color: white !important; }
+        .currency-btn:hover { transform: translateY(-2px); }
+        .rate-display { color: white; font-weight: 600; font-size: 0.9rem; }
         
-        .hero-section { background: linear-gradient(rgba(76,175,80,0.8), rgba(69,160,73,0.8)), url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1920'); background-size: cover; background-position: center; padding: 3rem 1rem; text-align: center; color: white; margin: 1rem 0; border-radius: 20px; }
-        .hero-section h2 { font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .hero-cta { background: linear-gradient(45deg, #D7BDE2, #C39BD3); color: #333; border: none; padding: 1rem 2rem; border-radius: 30px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .hero-cta:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+        .hero-section { 
+            background: linear-gradient(rgba(76,175,80,0.9), rgba(69,160,73,0.9)), 
+                        url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover; 
+            padding: 4rem 1rem; 
+            text-align: center; 
+            color: white; 
+            margin: 1.5rem 0; 
+            border-radius: 25px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .hero-section h2 { font-size: clamp(2rem, 6vw, 3rem); margin-bottom: 1rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.5); }
+        .hero-cta { 
+            background: linear-gradient(45deg, #D7BDE2, #C39BD3); 
+            color: #333; 
+            border: none; 
+            padding: 1.2rem 2.5rem; 
+            border-radius: 50px; 
+            font-size: 1.1rem; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2); 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hero-cta:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
         
-        .categories { display: flex; overflow-x: auto; padding: 1rem; gap: 1rem; margin: 1rem 0; scrollbar-width: none; }
+        .categories { 
+            display: flex; 
+            overflow-x: auto; 
+            padding: 1rem; 
+            gap: 1rem; 
+            margin: 1.5rem 0; 
+            scrollbar-width: none; 
+            padding-bottom: 0.5rem;
+        }
         .categories::-webkit-scrollbar { display: none; }
-        .category-btn { background: white; border: none; padding: 0.8rem 1.5rem; border-radius: 25px; cursor: pointer; font-weight: bold; white-space: nowrap; transition: all 0.3s; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
-        .category-btn.active { background: #4CAF50; color: white; }
+        .category-btn { 
+            background: white; 
+            border: none; 
+            padding: 1rem 1.8rem; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            white-space: nowrap; 
+            transition: all 0.3s; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            font-size: 0.95rem;
+        }
+        .category-btn.active { background: #4CAF50 !important; color: white !important; transform: scale(1.05); }
+        .category-btn:hover { transform: translateY(-3px); }
         
-        .container { max-width: 1200px; margin: 0 auto; padding: 1rem; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 1.5rem 1rem; }
         
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
-        .product-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.3s; }
-        .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
-        .product-img { width: 100%; height: 220px; object-fit: cover; }
-        .product-info { padding: 1.5rem; }
-        .product-name { font-size: 1.3rem; font-weight: bold; color: #4CAF50; margin-bottom: 0.5rem; }
-        .product-price { font-size: 1.5rem; font-weight: bold; color: #D7BDE2; margin-bottom: 0.5rem; }
-        .product-stock { color: #f39c12; font-weight: bold; margin-bottom: 1rem; }
-        .product-desc { color: #666; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.4; }
-        .add-cart { background: linear-gradient(45deg, #4CAF50, #45a049); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 25px; font-size: 1rem; cursor: pointer; width: 100%; transition: all 0.3s; font-weight: bold; }
-        .add-cart:hover { transform: scale(1.02); }
-        .out-stock { background: #ccc !important; cursor: not-allowed; }
+        .products-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); 
+            gap: 2rem; 
+            margin: 2rem 0; 
+        }
+        .product-card { 
+            background: white; 
+            border-radius: 25px; 
+            overflow: hidden; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1); 
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+            position: relative;
+        }
+        .product-card:hover { 
+            transform: translateY(-15px) scale(1.02); 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2); 
+        }
+        .product-img { 
+            width: 100%; 
+            height: 240px; 
+            object-fit: cover; 
+            transition: transform 0.4s;
+        }
+        .product-card:hover .product-img { transform: scale(1.05); }
+        .product-info { padding: 1.8rem; }
+        .product-name { 
+            font-size: 1.4rem; 
+            font-weight: 700; 
+            color: #4CAF50; 
+            margin-bottom: 0.8rem; 
+        }
+        .product-price { 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            color: #D7BDE2; 
+            margin-bottom: 0.5rem; 
+        }
+        .product-stock { 
+            color: #f39c12; 
+            font-weight: 700; 
+            font-size: 1rem; 
+            margin-bottom: 1rem; 
+        }
+        .product-desc { 
+            color: #666; 
+            margin-bottom: 1rem; 
+            font-size: 0.95rem; 
+        }
+        .add-cart { 
+            background: linear-gradient(45deg, #4CAF50, #45a049); 
+            color: white; 
+            border: none; 
+            padding: 1rem 2rem; 
+            border-radius: 30px; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            width: 100%; 
+            font-weight: 700; 
+            transition: all 0.3s; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .add-cart:hover { transform: scale(1.05); }
+        .out-stock { background: #ccc !important; cursor: not-allowed !important; }
         
-        .cart-section, .checkout-form { background: white; margin: 2rem 0; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .cart-title { font-size: 1.8rem; color: #4CAF50; margin-bottom: 1rem; text-align: center; }
-        .cart-items { max-height: 300px; overflow-y: auto; margin-bottom: 1rem; }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #eee; }
-        .cart-total { font-size: 1.8rem; font-weight: bold; color: #4CAF50; text-align: center; margin: 1.5rem 0; background: linear-gradient(45deg, #D7BDE2, #C39BD3); padding: 1rem; border-radius: 15px; }
+        .cart-section { 
+            background: white; 
+            margin: 3rem 0; 
+            padding: 2.5rem; 
+            border-radius: 25px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1); 
+        }
+        .cart-title { 
+            font-size: 2rem; 
+            color: #4CAF50; 
+            margin-bottom: 1.5rem; 
+            text-align: center; 
+        }
+        .cart-items { 
+            max-height: 350px; 
+            overflow-y: auto; 
+            margin-bottom: 1.5rem; 
+            background: #f8f9fa; 
+            padding: 1.5rem; 
+            border-radius: 15px;
+        }
+        .cart-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 1.2rem; 
+            border-bottom: 1px solid #eee; 
+            background: white; 
+            border-radius: 10px; 
+            margin-bottom: 0.5rem;
+        }
+        .cart-total { 
+            font-size: 2rem; 
+            font-weight: 800; 
+            color: #4CAF50; 
+            text-align: center; 
+            margin: 2rem 0; 
+            background: linear-gradient(45deg, #D7BDE2, #C39BD3); 
+            padding: 1.5rem; 
+            border-radius: 20px; 
+        }
         
-        .whatsapp-btn, .checkout-btn { width: 100%; padding: 1.2rem; margin: 0.5rem 0; border: none; border-radius: 25px; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; font-weight: bold; }
+        .whatsapp-btn, .checkout-btn { 
+            width: 100%; 
+            padding: 1.5rem; 
+            margin: 1rem 0; 
+            border: none; 
+            border-radius: 30px; 
+            font-size: 1.2rem; 
+            cursor: pointer; 
+            font-weight: 700; 
+            transition: all 0.3s; 
+        }
         .whatsapp-btn { background: #25D366; color: white; }
         .checkout-btn { background: linear-gradient(45deg, #D7BDE2, #C39BD3); color: #333; }
         
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #4CAF50; }
-        .form-group input, .form-group textarea { width: 100%; padding: 1rem; border: 2px solid #D7BDE2; border-radius: 12px; font-size: 1rem; }
-        .delivery-option { display: flex; gap: 1.5rem; margin: 1rem 0; flex-wrap: wrap; }
-        .delivery-option label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 1rem; border: 2px solid #D7BDE2; border-radius: 20px; }
-        .delivery-option input[type="radio"] { width: auto; }
+        .form-group { margin-bottom: 1.8rem; }
+        .form-group label { 
+            display: block; 
+            margin-bottom: 0.8rem; 
+            font-weight: 700; 
+            color: #4CAF50; 
+            font-size: 1.1rem;
+        }
+        .form-group input, .form-group textarea { 
+            width: 100%; 
+            padding: 1.2rem; 
+            border: 2px solid #D7BDE2; 
+            border-radius: 15px; 
+            font-size: 1rem; 
+            transition: all 0.3s;
+        }
+        .delivery-option { 
+            display: flex; 
+            gap: 1.5rem; 
+            margin: 1.5rem 0; 
+            flex-wrap: wrap; 
+        }
+        .delivery-option label { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.8rem; 
+            cursor: pointer; 
+            padding: 1rem 1.5rem; 
+            border: 2px solid #D7BDE2; 
+            border-radius: 25px; 
+            transition: all 0.3s; 
+            font-weight: 600;
+        }
         
-        .floating-whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 6px 25px rgba(37,211,102,0.4); cursor: pointer; z-index: 1000; transition: all 0.3s; }
-        .floating-whatsapp:hover { transform: scale(1.1); }
+        .floating-whatsapp { 
+            position: fixed; 
+            bottom: 25px; 
+            right: 25px; 
+            background: #25D366; 
+            color: white; 
+            width: 70px; 
+            height: 70px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 2rem; 
+            box-shadow: 0 8px 30px rgba(37,211,102,0.4); 
+            cursor: pointer; 
+            z-index: 1000; 
+            transition: all 0.3s; 
+        }
+        .floating-whatsapp:hover { transform: scale(1.15) rotate(10deg); }
         
         @media (max-width: 768px) {
-            .products-grid { grid-template-columns: 1fr; }
-            .currency-selector { flex-direction: column; gap: 0.8rem; }
-            .hero-section h2 { font-size: 2rem; }
+            .products-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .currency-selector { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+            .hero-section { padding: 3rem 1rem; margin: 1rem 0; }
+            .categories { padding: 0.8rem; gap: 0.8rem; }
+            .category-btn { padding: 0.8rem 1.2rem; font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
+    <!-- HEADER -->
     <header class="header">
         <h1><i class="fas fa-birthday-cake"></i> Tambo</h1>
-        <p class="location">Los Guayos, Sector Félix Ríos, Carabobo, Venezuela 📍</p>
+        <p class="location">🍰 Los Guayos, Sector Félix Ríos, Carabobo, Venezuela 📍</p>
     </header>
     
+    <!-- SELECTOR MONEDA -->
     <div class="currency-selector">
         <button class="currency-btn active" data-currency="USD">$ USD</button>
         <button class="currency-btn" data-currency="BS">Bs. VES</button>
-        <span class="rate-display">Tasa BCV: 1 USD = $<span id="bcv-rate">38.50</span></span>
+        <span class="rate-display">Tasa BCV: $<span id="bcv-rate">38.50</span></span>
     </div>
     
-    <div class="hero-section">
-        <h2>🍰 Dulces • Postres • Panadería 🍞</h2>
-        <p style="font-size: 1.2rem; margin-bottom: 1.5rem;">Productos frescos todos los días en Los Guayos</p>
+    <!-- HERO -->
+    <section class="hero-section">
+        <h2>🍰 Dulces • Postres • Panadería Artesanal 🍞</h2>
+        <p style="font-size: 1.3rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Productos frescos todos los días en Los Guayos
+        </p>
         <button class="hero-cta" onclick="scrollToProducts()">
-            <i class="fas fa-shopping-cart"></i> Ver Productos
+            <i class="fas fa-shopping-cart"></i> Explorar Catálogo
         </button>
-    </div>
+    </section>
     
+    <!-- CATEGORÍAS -->
     <div class="categories" id="categories">
-        <button class="category-btn active" data-category="all">Todos</button>
-        <button class="category-btn" data-category="tortas">Tortas</button>
-        <button class="category-btn" data-category="dulces">Dulces</button>
-        <button class="category-btn" data-category="pan">Panadería</button>
-        <button class="category-btn" data-category="salado">Salado</button>
+        <button class="category-btn active" data-category="all">🍰 Todos</button>
+        <button class="category-btn" data-category="tortas">🎂 Tortas</button>
+        <button class="category-btn" data-category="dulces">🍬 Dulces</button>
+        <button class="category-btn" data-category="pan">🍞 Panadería</button>
+        <button class="category-btn" data-category="salado">🧂 Salado</button>
     </div>
     
+    <!-- CONTENIDO PRINCIPAL -->
     <div class="container">
         <div class="products-grid" id="products-grid">
-            <!-- Productos aparecerán aquí INSTANTÁNEAMENTE -->
+            <!-- ✅ PRODUCTOS CARGAN AQUÍ INMEDIATAMENTE -->
         </div>
         
+        <!-- CARRITO -->
         <div class="cart-section">
-            <h2 class="cart-title"><i class="fas fa-shopping-cart"></i> Carrito (<span id="cart-count">0</span>)</h2>
-            <div class="cart-items" id="cart-items">Tu carrito está vacío 🛒</div>
+            <h2 class="cart-title"><i class="fas fa-shopping-cart"></i> Tu Carrito (<span id="cart-count">0</span>)</h2>
+            <div class="cart-items" id="cart-items">Tu carrito está vacío 🛒<br><small>¡Agrega tus productos favoritos!</small></div>
             <div class="cart-total" id="cart-total">Total: $0.00</div>
             <button class="whatsapp-btn" onclick="openWhatsApp()">
                 <i class="fab fa-whatsapp"></i> Pedir por WhatsApp
             </button>
             <button class="checkout-btn" onclick="toggleCheckout()">
-                <i class="fas fa-credit-card"></i> Enviar Voucher
+                <i class="fas fa-receipt"></i> Confirmar con Voucher
             </button>
         </div>
         
+        <!-- FORMULARIO CHECKOUT -->
         <div class="checkout-form" id="checkout-form" style="display:none;">
-            <h3><i class="fas fa-receipt"></i> Confirmar Pedido</h3>
+            <h3 style="text-align:center; color:#4CAF50; margin-bottom:2rem;"><i class="fas fa-receipt"></i> Confirmar Pedido</h3>
             <div class="form-group">
-                <label>Nombre Completo</label>
+                <label>Nombre Completo *</label>
                 <input type="text" id="customer-name" placeholder="Tu nombre completo">
             </div>
             <div class="form-group">
-                <label>Número WhatsApp</label>
+                <label>Número WhatsApp *</label>
                 <input type="tel" id="customer-phone" placeholder="0412-XXX-XXXX">
             </div>
             <div class="delivery-option">
-                <label><input type="radio" name="delivery" value="store" checked> Recoger en Tienda</label>
-                <label><input type="radio" name="delivery" value="delivery"> Delivery</label>
+                <label><input type="radio" name="delivery" value="store" checked> 🏪 Recoger en Tienda</label>
+                <label><input type="radio" name="delivery" value="delivery"> 🚚 Delivery (+$2)</label>
             </div>
             <div class="form-group" id="delivery-address-group" style="display:none;">
                 <label>Dirección Completa</label>
-                <textarea id="delivery-address" rows="3" placeholder="Escribe tu dirección..."></textarea>
+                <textarea id="delivery-address" rows="3" placeholder="Escribe tu dirección completa o pega desde Google Maps..."></textarea>
             </div>
             <div class="form-group">
-                <label>Voucher de Pago</label>
+                <label>Foto Voucher de Pago *</label>
                 <input type="file" id="voucher-file" accept="image/*">
             </div>
-            <button class="whatsapp-btn" onclick="confirmOrder()">✅ Confirmar Pedido</button>
+            <button class="whatsapp-btn" style="background: linear-gradient(45deg, #4CAF50, #45a049) !important;" onclick="confirmOrder()">
+                ✅ Confirmar Pedido
+            </button>
         </div>
     </div>
     
-    <div class="floating-whatsapp" onclick="openWhatsApp()" title="WhatsApp">
+    <!-- WHATSAPP FLOATING -->
+    <div class="floating-whatsapp" onclick="openWhatsApp()" title="Chatea por WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </div>
 
     <script>
-        // ★ CATÁLOGO COMPLETO (PRECIO EN USD BASE)
+        // ✅ CATÁLOGO - PRECIOS EN USD BASE
         const productos = [
-            {id:1,nombre:"Torta Tres Leches",precio:15,stock:8,categoria:"tortas",img:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400",desc:"Bizcocho esponjoso 3 leches. 1kg familiar.",alergenos:"Lácteos, Gluten"},
-            {id:2,nombre:"Cheesecake NY",precio:18,stock:6,categoria:"tortas",img:"https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400",desc:"New York style crujiente. 1kg.",alergenos:"Lácteos, Gluten"},
-            {id:3,nombre:"Pan Dulce",precio:8,stock:12,categoria:"pan",img:"https://images.unsplash.com/photo-1603048297194-8f7d9e7f8e7a?w=400",desc:"Navideño frutas confitadas. 1kg.",alergenos:"Gluten, Huevos"},
-            {id:4,nombre:"Cachitos",precio:2.5,stock:24,categoria:"pan",img:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400",desc:"Jamón y queso. Unidad.",alergenos:"Gluten, Lácteos"},
-            {id:5,nombre:"Tequeños Premium",precio:4,stock:15,categoria:"salado",img:"https://images.unsplash.com/photo-1621996346565-e3adc652b4a4?w=400",desc:"Queso cabra. 6unid.",alergenos:"Gluten, Lácteos"},
-            {id:6,nombre:"Suspiros",precio:3,stock:20,categoria:"dulces",img:"https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400",desc:"Manjar blanco. Docena.",alergenos:"Huevos, Lácteos"},
-            {id:7,nombre:"Majarete",precio:5,stock:10,categoria:"dulces",img:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400",desc:"Coco fresco. Porción.",alergenos:"Lácteos"},
-            {id:8,nombre:"Croissants",precio:1.5,stock:30,categoria:"pan",img:"https://images.unsplash.com/photo-1603048297194-8f7d9e7f8e7a?w=400",desc:"Hojaldrados. Unidad.",alergenos:"Gluten, Lácteos"},
-            {id:9,nombre:"Torticas Carite",precio:2,stock:18,categoria:"salado",img:"https://images.unsplash.com/photo-1621996346565-e3adc652b4a4?w=400",desc:"Crujientes día. Docena.",alergenos:"Gluten, Pescado"},
-            {id:10,nombre:"Bienmesabe",precio:12,stock:5,categoria:"tortas",img:"https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400",desc:"Coco familiar. 1kg.",alergenos:"Huevos, Lácteos"}
+            {id:1,nombre:"Torta Tres Leches",precio:15,stock:8,categoria:"tortas",img:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400",desc:"Bizcocho esponjoso con 3 leches. 1kg familiar.",alergenos:"Lácteos, Gluten"},
+            {id:2,nombre:"Cheesecake NY",precio:18,stock:6,categoria:"tortas",img:"https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400",desc:"Estilo New York con base crujiente. 1kg.",alergenos:"Lácteos, Gluten"},
+            {id:3,nombre:"Pan Dulce Navideño",precio:8,stock:12,categoria:"pan",img:"https://images.unsplash.com/photo-1603048297194-8f7d9e7f8e7a?w=400",desc:"Tradicional con frutas confitadas. 1kg.",alergenos:"Gluten, Huevos"},
+            {id:4,nombre:"Cachitos",precio:2.5,stock:24,categoria:"pan",img:"https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400",desc:"Rellenos de jamón y queso fresco. Unidad.",alergenos:"Gluten, Lácteos"},
+            {id:5,nombre:"Tequeños Premium",precio:4,stock:15,categoria:"salado",img:"https://images.unsplash.com/photo-1621996346565-e3adc652b4a4?w=400",desc:"Queso blanco de cabra artesanal. 6 unidades.",alergenos:"Gluten, Lácteos"},
+            {id:6,nombre:"Suspiros",precio:3,stock:20,categoria:"dulces",img:"https://images.unsplash.com/photo-1541781774459-bb2af79dd9b8?w=400",desc:"Suspiros venezolanos con manjar blanco. Docena.",alergenos:"Huevos, Lácteos"},
+            {id:7,nombre:"Majarete",precio:5,stock:10,categoria:"dulces",img:"https://images.unsplash.com/photo-1628258334167-d9a4a6e46390?w=400",desc:"Cremoso de coco fresco rallado. Porción individual.",alergenos:"Lácteos"},
+            {id:8,nombre:"Croissants",precio:1.5,stock:30,categoria:"pan",img:"https://images.unsplash.com/photo-1603048297194-8f7d9e7f8e7a?w=400",desc:"Hojaldrados franceses recién horneados. Unidad.",alergenos:"Gluten, Lácteos"},
+            {id:9,nombre:"Torticas de Carite",precio:2,stock:18,categoria:"salado",img:"https://images.unsplash.com/photo-1628258334167-d9a4a6e46390?w=400",desc:"Crujientes de pescado del día. Docena.",alergenos:"Gluten, Pescado"},
+            {id:10,nombre:"Bienmesabe",precio:12,stock:5,categoria:"tortas",img:"https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400",desc:"Bizcocho de coco con merengue. 1kg familiar.",alergenos:"Huevos, Lácteos"}
         ];
 
-        let carrito = [];
-        let moneda = 'USD';
-        let tasaBCV = 38.50;
-        let categoriaActual = 'all';
+        let carrito = [], moneda = 'USD', tasaBCV = 38.50, categoriaActual = 'all';
 
-        // ★ FUNCIÓN PRINCIPAL: MUESTRA PRODUCTOS AL INSTANTE
-        function renderProductos() {
+        // ✅ RENDER PRODUCTOS (SE EJECUTA SIEMPRE)
+        function renderProductos(){
             const grid = document.getElementById('products-grid');
-            const productosAMostrar = categoriaActual === 'all' ? productos : productos.filter(p => p.categoria === categoriaActual);
+            const mostrar = categoriaActual === 'all' ? productos : productos.filter(p=>p.categoria===categoriaActual);
             
-            grid.innerHTML = productosAMostrar.map(producto => `
+            grid.innerHTML = mostrar.map(p=>`
                 <div class="product-card">
-                    <img src="${producto.img}" alt="${producto.nombre}" class="product-img" loading="lazy">
+                    <img src="${p.img}" alt="${p.nombre}" class="product-img" loading="lazy" onerror="this.src='https://via.placeholder.com/400x240/4CAF50/D7BDE2?text=${p.nombre}'">
                     <div class="product-info">
-                        <div class="product-name">${producto.nombre}</div>
+                        <div class="product-name">${p.nombre}</div>
                         <div class="product-price">
-                            <strong>${moneda === 'USD' ? `$${producto.precio}` : `Bs. ${(producto.precio * tasaBCV).toLocaleString('es-VE')}`}</strong>
-                            ${moneda === 'USD' ? `<small style="color:#666;">(Bs. ${(producto.precio * tasaBCV).toLocaleString('es-VE')})</small>` : ''}
+                            <strong>${moneda==='USD'?`$${p.precio.toFixed(2)}`:`Bs. ${(p.precio*tasaBCV).toLocaleString('es-VE')}`}</strong>
+                            ${moneda==='USD'?'<small style="color:#666;">(Bs. '+(p.precio*tasaBCV).toLocaleString('es-VE')+')</small>':''}
                         </div>
-                        <div class="product-stock">📦 ${producto.stock} disponibles</div>
-                        <div class="product-desc">${producto.desc}</div>
-                        <small style="color:#e74c3c;">⚠️ ${producto.alergenos}</small><br>
-                        <button class="add-cart ${producto.stock === 0 ? 'out-stock' : ''}" 
-                                onclick="agregarAlCarrito(${producto.id})" 
-                                ${producto.stock === 0 ? 'disabled' : ''}>
-                            ${producto.stock === 0 ? '❌ Sin stock' : '🛒 Agregar'}
+                        <div class="product-stock">📦 ${p.stock} disponibles</div>
+                        <div class="product-desc">${p.desc}</div>
+                        <small style="color:#e74c3c;display:block;margin-bottom:1rem;">⚠️ ${p.alergenos}</small>
+                        <button class="add-cart ${p.stock===0?'out-stock':''}" 
+                                onclick="agregarAlCarrito(${p.id})" 
+                                ${p.stock===0?'disabled':''}>
+                            ${p.stock===0?'❌ Sin stock':'🛒 Agregar'}
                         </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // ★ CARRITO
-        function renderCarrito() {
-            const items = document.getElementById('cart-items');
-            const count = document.getElementById('cart-count');
-            const total = document.getElementById('cart-total');
+        // ✅ CARRITO
+        function renderCarrito(){
+            const itemsEl = document.getElementById('cart-items');
+            const countEl = document.getElementById('cart-count');
+            const totalEl = document.getElementById('cart-total');
             
-            if (carrito.length === 0) {
-                items.innerHTML = '<div style="text-align:center;padding:2rem;color:#999;">🛒 Carrito vacío</div>';
-            } else {
-                items.innerHTML = carrito.map(item => `
+            if(carrito.length===0){
+                itemsEl.innerHTML = '<div style="text-align:center;padding:3rem;color:#999;font-size:1.1rem;">🛒 Tu carrito está vacío<div style="margin-top:1rem;font-size:0.9rem;">¡Agrega tus productos favoritos!</div></div>';
+            }else{
+                itemsEl.innerHTML = carrito.map(item=>`
                     <div class="cart-item">
-                        <span>${item.nombre} <small>(x${item.cantidad})</small></span>
                         <div>
-                            ${moneda === 'USD' ? `$${item.precio * item.cantidad}` : `Bs. ${(item.precio * tasaBCV * item.cantidad).toLocaleString('es-VE')}`}
-                            <button onclick="removerDelCarrito(${item.id})" style="background:none;border:none;color:#e74c3c;font-size:1.5rem;margin-left:1rem;">×</button>
+                            <strong>${item.nombre}</strong> 
+                            <small style="display:block;color:#666;">x${item.cantidad} | Stock: ${item.stock}</small>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:700;font-size:1.2rem;margin-bottom:0.5rem;">
+                                ${moneda==='USD'?`$${ (item.precio*item.cantidad).toFixed(2) }`:`Bs. ${(item.precio*tasaBCV*item.cantidad).toLocaleString('es-VE')}`}
+                            </div>
+                            <button onclick="removerDelCarrito(${item.id})" style="background:none;border:none;color:#e74c3c;font-size:1.8rem;cursor:pointer;padding:0.5rem;">×</button>
                         </div>
                     </div>
                 `).join('');
             }
             
-            count.textContent = carrito.reduce((sum, item) => sum + item.cantidad, 0);
-            const totalUSD = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-            total.innerHTML = `Total: ${moneda === 'USD' ? `$${totalUSD.toFixed(2)}` : `Bs. ${(totalUSD * tasaBCV).toLocaleString('es-VE')}`}`;
+            const totalUSD = carrito.reduce((sum,item)=>sum+(item.precio*item.cantidad),0);
+            countEl.textContent = carrito.reduce((sum,item)=>sum+item.cantidad,0);
+            totalEl.innerHTML = `Total: ${moneda==='USD'?`$${totalUSD.toFixed(2)}`:`Bs. ${(totalUSD*tasaBCV).toLocaleString('es-VE')}`}
+                ${moneda==='USD'?'<br><small style="font-size:0.9rem;">≈ Bs. '+(totalUSD*tasaBCV).toLocaleString('es-VE')+'</small>':''}`;
         }
 
-        // ★ FUNCIONES CARRITO
-        function agregarAlCarrito(id) {
-            const producto = productos.find(p => p.id === id);
-            if (producto.stock > 0) {
-                const item = carrito.find(i => i.id === id);
-                if (item) {
+        // ✅ FUNCIONES CARRITO
+        function agregarAlCarrito(id){
+            const producto = productos.find(p=>p.id===id);
+            if(producto.stock>0){
+                const item = carrito.find(i=>i.id===id);
+                if(item){
                     item.cantidad++;
-                } else {
-                    carrito.push({...producto, cantidad: 1});
+                }else{
+                    carrito.push({...producto,cantidad:1});
                 }
                 producto.stock--;
                 renderProductos();
@@ -233,100 +473,96 @@
             }
         }
 
-        function removerDelCarrito(id) {
-            const itemIndex = carrito.findIndex(item => item.id === id);
-            productos.find(p => p.id === id).stock += carrito[itemIndex].cantidad;
-            carrito.splice(itemIndex, 1);
+        function removerDelCarrito(id){
+            const itemIndex = carrito.findIndex(item=>item.id===id);
+            productos.find(p=>p.id===id).stock += carrito[itemIndex].cantidad;
+            carrito.splice(itemIndex,1);
             renderProductos();
             renderCarrito();
         }
 
-        // ★ TASA BCV (NO BLOQUEA CARGA)
-        function actualizarTasaBCV() {
-            fetch('https://api.bcv.org.ve/dolar?mode=simple')
-                .then(r => r.json())
-                .then(data => {
-                    tasaBCV = parseFloat(data) || 38.50;
-                    document.getElementById('bcv-rate').textContent = tasaBCV.toFixed(2);
-                    renderProductos();
-                    renderCarrito();
-                })
-                .catch(() => {
-                    document.getElementById('bcv-rate').textContent = '38.50';
-                });
+        // ✅ TASA BCV (NO BLOQUEANTE)
+        function actualizarTasaBCV(){
+            fetch('https://api.bcv.org.ve/dolar?mode=simple', {mode:'cors'})
+            .then(r=>r.json())
+            .then(data=>{
+                tasaBCV = parseFloat(data)||38.50;
+                document.getElementById('bcv-rate').textContent = tasaBCV.toFixed(2);
+                renderProductos();
+                renderCarrito();
+            }).catch(e=>{
+                console.log('BCV fallback:',38.50);
+            });
         }
 
-        // ★ EVENTOS
-        function scrollToProducts() {
-            document.getElementById('products-grid').scrollIntoView({behavior: 'smooth'});
+        // ✅ EVENTOS PRINCIPALES
+        function scrollToProducts(){document.getElementById('products-grid').scrollIntoView({behavior:'smooth'});}
+        function toggleCheckout(){
+            if(carrito.length===0){return alert('🥳 Primero agrega productos al carrito');}
+            document.getElementById('checkout-form').style.display='block';
+            document.getElementById('checkout-form').scrollIntoView({behavior:'smooth'});
         }
-
-        function toggleCheckout() {
-            if (carrito.length === 0) return alert('🥳 Agrega productos primero');
-            document.getElementById('checkout-form').style.display = 'block';
-            document.getElementById('checkout-form').scrollIntoView({behavior: 'smooth'});
+        function openWhatsApp(){
+            const totalUSD = carrito.reduce((sum,item)=>sum+(item.precio*item.cantidad),0);
+            const mensaje = `Hola Tambo! 🧁%0A%0A🍰 *MI PEDIDO:*%0A${carrito.map(item=>`• ${item.nombre} x${item.cantidad}`).join('%0A')}%0A%0A💰 *TOTAL:* $${totalUSD.toFixed(2)}%0A📍 Los Guayos, Sector Félix Ríos, Carabobo`;
+            window.open(`https://wa.me/584124567890?text=${mensaje}`, '_blank');
         }
-
-        function openWhatsApp() {
-            const totalUSD = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-            const mensaje = `Hola Tambo! 🧁
-
-🍰 PEDIDO:
-${carrito.map(item => `• ${item.nombre} x${item.cantidad}`).join('
-')}
-
-💰 Total: $${totalUSD.toFixed(2)}
-📍 Los Guayos, Carabobo`;
-            window.open(`https://wa.me/584124567890?text=${encodeURIComponent(mensaje)}`, '_blank');
-        }
-
-        function confirmOrder() {
-            if (!document.getElementById('customer-name').value || !document.getElementById('voucher-file').files[0]) {
-                return alert('Completa nombre y voucher');
+        function confirmOrder(){
+            const nombre = document.getElementById('customer-name').value.trim();
+            const telefono = document.getElementById('customer-phone').value.trim();
+            const voucher = document.getElementById('voucher-file').files[0];
+            if(!nombre || !telefono || !voucher){
+                return alert('❌ Completa: nombre, teléfono y voucher');
             }
-            alert('✅ Pedido confirmado! Te contactamos por WhatsApp');
+            const orderId = 'TAMBO-'+Date.now();
+            alert(`✅ *¡PEDIDO CONFIRMADO!* 🎉%0AID: ${orderId}%0ATe contactamos YA por WhatsApp`);
             carrito = [];
-            document.getElementById('checkout-form').style.display = 'none';
+            document.getElementById('checkout-form').style.display='none';
+            document.getElementById('customer-name').value='';
+            document.getElementById('customer-phone').value='';
+            document.getElementById('voucher-file').value='';
             renderCarrito();
         }
 
-        // ★ INICIALIZACIÓN (SIN BLOQUEOS)
-        document.addEventListener('DOMContentLoaded', function() {
-            // 1. PRODUCTOS AL INSTANTE
-            renderProductos();
+        // 🚀 INICIALIZACIÓN GARANTIZADA
+        function initApp(){
+            renderProductos(); // ✅ SIEMPRE PRIMERO
+            renderCarrito();
             
-            // 2. EVENTOS MONEDAS
-            document.querySelectorAll('.currency-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
+            // Monedas
+            document.querySelectorAll('.currency-btn').forEach(btn=>{
+                btn.onclick=()=>{
                     document.querySelector('.currency-btn.active').classList.remove('active');
-                    this.classList.add('active');
-                    moneda = this.dataset.currency;
+                    btn.classList.add('active');
+                    moneda = btn.dataset.currency;
                     renderProductos();
                     renderCarrito();
-                });
+                };
             });
             
-            // 3. CATEGORÍAS
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
+            // Categorías
+            document.querySelectorAll('.category-btn').forEach(btn=>{
+                btn.onclick=()=>{
                     document.querySelector('.category-btn.active').classList.remove('active');
-                    this.classList.add('active');
-                    categoriaActual = this.dataset.category;
+                    btn.classList.add('active');
+                    categoriaActual = btn.dataset.category;
                     renderProductos();
-                });
+                };
             });
             
-            // 4. DELIVERY
-            document.querySelectorAll('input[name="delivery"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    document.getElementById('delivery-address-group').style.display = this.value === 'delivery' ? 'block' : 'none';
-                });
+            // Delivery
+            document.querySelectorAll('input[name="delivery"]').forEach(radio=>{
+                radio.onchange=()=>document.getElementById('delivery-address-group').style.display=radio.value==='delivery'?'block':'none';
             });
             
-            // 5. BCV EN SEGUNDO PLANO
-            setTimeout(actualizarTasaBCV, 1000);
-            setInterval(actualizarTasaBCV, 300000); // 5 min
-        });
+            // BCV background
+            setTimeout(actualizarTasaBCV,1500);
+            setInterval(actualizarTasaBCV,300000);
+        }
+
+        // ✅ DOBLE INICIALIZACIÓN (CRÍTICA PARA GITHub PAGES)
+        if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initApp);}
+        else{initApp();}
     </script>
 </body>
 </html>
