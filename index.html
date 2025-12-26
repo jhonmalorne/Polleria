@@ -306,7 +306,7 @@
     <div class="currency-selector">
         <button class="currency-btn active" data-currency="USD">$ USD</button>
         <button class="currency-btn" data-currency="BS">Bs. VES</button>
-        <span class="rate-display">Tasa BCV: $<span id="bcv-rate">38.50</span></span>
+        <span class="rate-display">Tasa BCV: $<span id="bcv-rate">291.35</span></span>
     </div>
     
     <!-- HERO -->
@@ -491,7 +491,7 @@
                 renderProductos();
                 renderCarrito();
             }).catch(e=>{
-                console.log('BCV fallback:',38.50);
+                console.log('BCV fallback:'291,35);
             });
         }
 
@@ -505,7 +505,7 @@
         function openWhatsApp(){
             const totalUSD = carrito.reduce((sum,item)=>sum+(item.precio*item.cantidad),0);
             const mensaje = `Hola Tambo! 🧁%0A%0A🍰 *MI PEDIDO:*%0A${carrito.map(item=>`• ${item.nombre} x${item.cantidad}`).join('%0A')}%0A%0A💰 *TOTAL:* $${totalUSD.toFixed(2)}%0A📍 Los Guayos, Sector Félix Ríos, Carabobo`;
-            window.open(`https://wa.me/584124567890?text=${mensaje}`, '_blank');
+            window.open(`https://wa.me/584244525765?text=${mensaje}`, '_blank');
         }
         function confirmOrder(){
             const nombre = document.getElementById('customer-name').value.trim();
@@ -566,3 +566,4 @@
     </script>
 </body>
 </html>
+
