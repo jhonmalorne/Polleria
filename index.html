@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,75 +9,105 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #D7BDE2 0%, #E8DAEF 100%); color: #333; }
         
-        .header { background: linear-gradient(90deg, #4CAF50, #45a049); color: white; padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 100; }
+        .header { background: linear-gradient(90deg, #4CAF50, #45a049); color: white; padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .header h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
         .location { font-size: 0.9rem; opacity: 0.9; }
         
-        .currency-selector { background: rgba(255,255,255,0.2); padding: 0.5rem; margin: 1rem auto; max-width: 300px; border-radius: 25px; display: flex; justify-content: center; gap: 1rem; }
-        .currency-btn { background: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        .currency-selector { background: rgba(255,255,255,0.2); padding: 0.8rem; margin: 1rem auto; max-width: 400px; border-radius: 25px; display: flex; justify-content: center; align-items: center; gap: 1rem; backdrop-filter: blur(10px); }
+        .currency-btn { background: white; border: none; padding: 0.6rem 1.2rem; border-radius: 20px; cursor: pointer; font-weight: bold; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .currency-btn.active { background: #4CAF50; color: white; }
-        .rate-display { color: white; font-weight: bold; }
+        .rate-display { color: white; font-weight: bold; font-size: 0.95rem; }
+        .rate-loading { color: #FFD700; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        .hero-section { background: linear-gradient(rgba(76,175,80,0.8), rgba(69,160,73,0.8)), url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1920'); background-size: cover; background-position: center; padding: 3rem 1rem; text-align: center; color: white; margin: 1rem 0; border-radius: 20px; }
+        .hero-section h2 { font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero-cta { background: linear-gradient(45deg, #D7BDE2, #C39BD3); color: #333; border: none; padding: 1rem 2rem; border-radius: 30px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .hero-cta:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+        
+        .categories { display: flex; overflow-x: auto; padding: 1rem; gap: 1rem; margin: 1rem 0; scrollbar-width: none; }
+        .categories::-webkit-scrollbar { display: none; }
+        .category-btn { background: white; border: none; padding: 0.8rem 1.5rem; border-radius: 25px; cursor: pointer; font-weight: bold; white-space: nowrap; transition: all 0.3s; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+        .category-btn.active { background: #4CAF50; color: white; }
         
         .container { max-width: 1200px; margin: 0 auto; padding: 1rem; }
         
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
-        .product-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s; }
-        .product-card:hover { transform: translateY(-10px); }
-        .product-img { width: 100%; height: 200px; object-fit: cover; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .product-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.3s; position: relative; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .product-img { width: 100%; height: 220px; object-fit: cover; loading: lazy; }
         .product-info { padding: 1.5rem; }
         .product-name { font-size: 1.3rem; font-weight: bold; color: #4CAF50; margin-bottom: 0.5rem; }
-        .product-price { font-size: 1.4rem; font-weight: bold; color: #D7BDE2; margin-bottom: 0.5rem; }
+        .product-price { font-size: 1.5rem; font-weight: bold; color: #D7BDE2; margin-bottom: 0.5rem; }
         .product-stock { color: #f39c12; font-weight: bold; margin-bottom: 1rem; }
-        .product-desc { color: #666; margin-bottom: 1rem; font-size: 0.9rem; }
-        .add-cart { background: linear-gradient(45deg, #4CAF50, #45a049); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 25px; font-size: 1rem; cursor: pointer; width: 100%; transition: all 0.3s; }
-        .add-cart:hover { transform: scale(1.05); }
+        .product-desc { color: #666; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.4; }
+        .add-cart { background: linear-gradient(45deg, #4CAF50, #45a049); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 25px; font-size: 1rem; cursor: pointer; width: 100%; transition: all 0.3s; font-weight: bold; }
+        .add-cart:hover { transform: scale(1.02); }
         .out-stock { background: #ccc !important; cursor: not-allowed; }
         
-        .cart-section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .loading { text-align: center; padding: 2rem; color: #4CAF50; font-size: 1.2rem; }
+        
+        .cart-section, .checkout-form, .tracking-section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .cart-title { font-size: 1.8rem; color: #4CAF50; margin-bottom: 1rem; text-align: center; }
         .cart-items { max-height: 300px; overflow-y: auto; margin-bottom: 1rem; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #eee; }
-        .cart-total { font-size: 1.5rem; font-weight: bold; color: #4CAF50; text-align: center; margin: 1rem 0; }
+        .cart-total { font-size: 1.8rem; font-weight: bold; color: #4CAF50; text-align: center; margin: 1.5rem 0; background: linear-gradient(45deg, #D7BDE2, #C39BD3); padding: 1rem; border-radius: 15px; }
         
-        .checkout-btn, .whatsapp-btn { width: 100%; padding: 1rem; margin: 0.5rem 0; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; }
-        .checkout-btn { background: linear-gradient(45deg, #D7BDE2, #C39BD3); color: #333; font-weight: bold; }
-        .whatsapp-btn { background: #25D366; color: white; font-weight: bold; }
+        .whatsapp-btn, .checkout-btn { width: 100%; padding: 1.2rem; margin: 0.5rem 0; border: none; border-radius: 25px; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; font-weight: bold; }
+        .whatsapp-btn { background: #25D366; color: white; }
+        .checkout-btn { background: linear-gradient(45deg, #D7BDE2, #C39BD3); color: #333; }
         
-        .checkout-form { display: none; background: white; padding: 2rem; border-radius: 20px; margin-top: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1.5rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #4CAF50; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.8rem; border: 2px solid #D7BDE2; border-radius: 10px; font-size: 1rem; }
-        .delivery-option { display: flex; gap: 1rem; margin: 1rem 0; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 1rem; border: 2px solid #D7BDE2; border-radius: 12px; font-size: 1rem; transition: border-color 0.3s; }
+        .form-group input:focus { outline: none; border-color: #4CAF50; }
+        .delivery-option { display: flex; gap: 1.5rem; margin: 1rem 0; flex-wrap: wrap; }
+        .delivery-option label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 1rem; border: 2px solid #D7BDE2; border-radius: 20px; transition: all 0.3s; }
         .delivery-option input[type="radio"] { width: auto; }
+        .delivery-option label:hover { border-color: #4CAF50; }
         
-        .tracking-section { background: #f8f9fa; padding: 2rem; border-radius: 20px; margin: 2rem 0; text-align: center; }
-        .track-btn { background: #4CAF50; color: white; border: none; padding: 0.8rem 2rem; border-radius: 25px; cursor: pointer; font-size: 1rem; }
-        
-        .floating-whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 20px rgba(37,211,102,0.4); cursor: pointer; z-index: 1000; transition: transform 0.3s; }
+        .floating-whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 6px 25px rgba(37,211,102,0.4); cursor: pointer; z-index: 1000; transition: all 0.3s; }
         .floating-whatsapp:hover { transform: scale(1.1); }
         
         @media (max-width: 768px) {
-            .products-grid { grid-template-columns: 1fr; }
-            .currency-selector { flex-direction: column; gap: 0.5rem; }
-            .header h1 { font-size: 1.4rem; }
+            .products-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+            .currency-selector { flex-direction: column; gap: 0.8rem; padding: 1rem; }
+            .hero-section h2 { font-size: 2rem; }
+            .categories { padding: 0.5rem; }
         }
     </style>
 </head>
 <body>
     <header class="header">
         <h1><i class="fas fa-birthday-cake"></i> Tambo</h1>
-        <p class="location">Los Guayos, Sector Félix Ríos, Carabobo, Venezuela</p>
+        <p class="location">Los Guayos, Sector Félix Ríos, Carabobo, Venezuela 📍</p>
     </header>
     
     <div class="currency-selector">
         <button class="currency-btn active" data-currency="USD">$ USD</button>
         <button class="currency-btn" data-currency="BS">Bs. VES</button>
-        <span class="rate-display">Tasa BCV: 1 USD = <span id="bcv-rate">38.50</span> Bs.</span>
+        <span class="rate-display">Tasa BCV: 1 USD = $<span id="bcv-rate">Cargando...</span> <span id="bcv-date"></span></span>
+    </div>
+    
+    <div class="hero-section">
+        <h2>🍰 Dulces • Postres • Panadería 🍞</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 1.5rem;">Productos frescos todos los días en Los Guayos</p>
+        <button class="hero-cta" onclick="document.getElementById('products-grid').scrollIntoView({behavior: 'smooth'})">
+            <i class="fas fa-shopping-cart"></i> Ver Productos
+        </button>
+    </div>
+    
+    <div class="categories">
+        <button class="category-btn active" data-category="all">Todos</button>
+        <button class="category-btn" data-category="tortas">Tortas</button>
+        <button class="category-btn" data-category="dulces">Dulces</button>
+        <button class="category-btn" data-category="pan">Panadería</button>
+        <button class="category-btn" data-category="salado">Salado</button>
     </div>
     
     <div class="container">
         <div class="products-grid" id="products-grid">
-            <!-- Productos se cargan con JS -->
+            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando productos frescos...</div>
         </div>
         
         <div class="cart-section">
@@ -97,72 +126,106 @@
             <h3><i class="fas fa-receipt"></i> Confirmar Pedido</h3>
             <div class="form-group">
                 <label>Nombre Completo</label>
-                <input type="text" id="customer-name" required>
+                <input type="text" id="customer-name" placeholder="Tu nombre completo" required>
             </div>
             <div class="form-group">
                 <label>Número WhatsApp</label>
-                <input type="tel" id="customer-phone" required>
+                <input type="tel" id="customer-phone" placeholder="0412-XXX-XXXX" required>
             </div>
             <div class="delivery-option">
                 <label><input type="radio" name="delivery" value="store" checked> Recoger en Tienda</label>
-                <label><input type="radio" name="delivery" value="delivery"> Delivery</label>
+                <label><input type="radio" name="delivery" value="delivery"> Delivery (+$2)</label>
             </div>
             <div class="form-group" id="delivery-address-group" style="display:none;">
-                <label>Dirección de Entrega</label>
-                <input type="text" id="delivery-address" placeholder="Escribe tu dirección o comparte desde Google Maps">
+                <label>Dirección Completa</label>
+                <textarea id="delivery-address" rows="3" placeholder="Escribe tu dirección completa o comparte desde Google Maps"></textarea>
             </div>
             <div class="form-group">
                 <label>Voucher de Pago</label>
-                <input type="file" id="voucher-file" accept="image/*">
+                <input type="file" id="voucher-file" accept="image/*" required>
             </div>
-            <button class="whatsapp-btn" onclick="confirmOrder()">Confirmar Pedido</button>
-        </div>
-        
-        <div class="tracking-section">
-            <h3>Seguimiento de Pedidos</h3>
-            <input type="text" id="track-id" placeholder="ID de Pedido">
-            <button class="track-btn" onclick="trackOrder()">Rastrear</button>
-            <div id="track-result"></div>
+            <button class="whatsapp-btn" onclick="confirmOrder()">✅ Confirmar Pedido</button>
         </div>
     </div>
     
-    <div class="floating-whatsapp" onclick="openWhatsApp()">
+    <div class="floating-whatsapp" onclick="openWhatsApp()" title="Hablar por WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </div>
 
     <script>
-        // Productos de ejemplo con stock
+        // Productos con categorías (precios en USD base)
         const productos = [
-            { id: 1, nombre: "Torta Tres Leches", precio: 15, stock: 8, img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400", desc: "Bizcocho esponjoso con leche condensada, evaporada y crema. Ingredientes: Harina, huevos, leche, azúcar. Sin nueces.", alergenos: "Lácteos, Gluten" },
-            { id: 2, nombre: "Cheesecake NY", precio: 18, stock: 6, img: "https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400", desc: "Clásico cheesecake con base de galleta. Ingredientes: Queso crema, galleta maría, azúcar glass.", alergenos: "Lácteos, Gluten" },
-            { id: 3, nombre: "Pan Dulce Navideño", precio: 8, stock: 12, img: "https://images.unsplash.com/photo-1603048297194-8f7d9e7f8e7a?w=400", desc: "Pan dulce tradicional con frutas confitadas. 1kg.", alergenos: "Gluten, Huevos" },
-            { id: 4, nombre: "Cachitos", precio: 2.5, stock: 24, img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400", desc: "Cachitos rellenos de jamón y queso. Unidad.", alergenos: "Gluten, Lácteos" },
-            { id: 5, nombre: "Tequeños Premium", precio: 4, stock: 15, img: "https://images.unsplash.com/photo-1621996346565-e3adc652b4a4?w=400", desc: "Tequeños artesanales con queso blanco de cabra. 6 unidades.", alergenos: "Gluten, Lácteos" },
-            { id: 6, nombre: "Suspiros", precio: 3, stock: 20, img: "https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400", desc: "Suspiros venezolanos con manjar blanco. Docena.", alergenos: "Huevos, Lácteos" },
-            { id: 7, nombre: "Majarete", precio: 5, stock: 10, img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400", desc: "Majarete cremoso con coco fresco. Porción individual.", alergenos: "Lácteos" },
-            { id: 8, nombre: "Croissants", precio: 1.5, stock: 30, img: "https://images.unsplash.com/photo-1603048297194-8f7d9e7f8e7a?w=400", desc: "Croissants hojaldrados recién horneados. Unidad.", alergenos: "Gluten, Lácteos, Huevos" },
-            { id: 9, nombre: "Torticas de Carite", precio: 2, stock: 18, img: "https://images.unsplash.com/photo-1621996346565-e3adc652b4a4?w=400", desc: "Torticas crujientes de carite del día. Docena.", alergenos: "Gluten, Pescado" },
-            { id: 10, nombre: "Bienmesabe", precio: 12, stock: 5, img: "https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400", desc: "Bizcocho de coco con merengue y almíbar. Familiar.", alergenos: "Huevos, Lácteos" }
+            { id: 1, nombre: "Torta Tres Leches", precio: 15, stock: 8, categoria: "tortas", img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400", desc: "Bizcocho esponjoso con 3 leches. Familiar 1kg.", alergenos: "Lácteos, Gluten" },
+            { id: 2, nombre: "Cheesecake NY", precio: 18, stock: 6, categoria: "tortas", img: "https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400", desc: "New York style con base crujiente. 1kg.", alergenos: "Lácteos, Gluten" },
+            { id: 3, nombre: "Pan Dulce Navideño", precio: 8, stock: 12, categoria: "pan", img: "https://images.unsplash.com/photo-1603048297194-8f7d9e7f8e7a?w=400", desc: "Tradicional con frutas confitadas. 1kg.", alergenos: "Gluten, Huevos" },
+            { id: 4, nombre: "Cachitos", precio: 2.5, stock: 24, categoria: "pan", img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400", desc: "Rellenos de jamón y queso. Unidad.", alergenos: "Gluten, Lácteos" },
+            { id: 5, nombre: "Tequeños Premium", precio: 4, stock: 15, categoria: "salado", img: "https://images.unsplash.com/photo-1621996346565-e3adc652b4a4?w=400", desc: "Queso blanco de cabra. 6 unidades.", alergenos: "Gluten, Lácteos" },
+            { id: 6, nombre: "Suspiros", precio: 3, stock: 20, categoria: "dulces", img: "https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400", desc: "Con manjar blanco tradicional. Docena.", alergenos: "Huevos, Lácteos" },
+            { id: 7, nombre: "Majarete", precio: 5, stock: 10, categoria: "dulces", img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400", desc: "Cremoso de coco fresco. Porción.", alergenos: "Lácteos" },
+            { id: 8, nombre: "Croissants", precio: 1.5, stock: 30, categoria: "pan", img: "https://images.unsplash.com/photo-1603048297194-8f7d9e7f8e7a?w=400", desc: "Hojaldrados recién horneados. Unidad.", alergenos: "Gluten, Lácteos" },
+            { id: 9, nombre: "Torticas de Carite", precio: 2, stock: 18, categoria: "salado", img: "https://images.unsplash.com/photo-1621996346565-e3adc652b4a4?w=400", desc: "Crujientes del día. Docena.", alergenos: "Gluten, Pescado" },
+            { id: 10, nombre: "Bienmesabe", precio: 12, stock: 5, categoria: "tortas", img: "https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400", desc: "Bizcocho de coco familiar. 1kg.", alergenos: "Huevos, Lácteos" }
         ];
 
         let carrito = [];
         let moneda = 'USD';
-        let tasaBCV = 38.50; // Simulación - en producción conectar a API BCV
+        let tasaBCV = 38.50;
+        let categoriaActual = 'all';
+        let productosFiltrados = [...productos];
 
-        // Inicializar página
-        document.addEventListener('DOMContentLoaded', function() {
+        // Cargar tasa BCV real
+        async function fetchBCVRate() {
+            try {
+                document.getElementById('bcv-rate').textContent = 'Cargando...';
+                document.getElementById('bcv-rate').className = 'rate-loading';
+                
+                const response = await fetch('https://api.bcv.org.ve/dolar?mode=simple');
+                const data = await response.json();
+                tasaBCV = parseFloat(data);
+                
+                document.getElementById('bcv-rate').textContent = tasaBCV.toFixed(2);
+                document.getElementById('bcv-rate').className = '';
+                document.getElementById('bcv-date').textContent = `(Actualizado: ${new Date().toLocaleTimeString('es-VE')})`;
+                
+                // Actualizar precios
+                renderProductos();
+                renderCarrito();
+            } catch (error) {
+                console.error('Error BCV:', error);
+                document.getElementById('bcv-rate').textContent = '38.50';
+                document.getElementById('bcv-rate').className = '';
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', async function() {
+            await fetchBCVRate();
+            setInterval(fetchBCVRate, 300000); // Cada 5 minutos
+            
             renderProductos();
-            updateCurrencyDisplay();
+            
+            // Eventos monedas
             document.querySelectorAll('.currency-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     document.querySelector('.currency-btn.active').classList.remove('active');
                     this.classList.add('active');
                     moneda = this.dataset.currency;
-                    updateCurrencyDisplay();
+                    renderProductos();
                     renderCarrito();
                 });
             });
             
+            // Filtros categorías
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelector('.category-btn.active').classList.remove('active');
+                    this.classList.add('active');
+                    categoriaActual = this.dataset.category;
+                    filtrarProductos();
+                });
+            });
+            
+            // Delivery options
             document.querySelectorAll('input[name="delivery"]').forEach(radio => {
                 radio.addEventListener('change', function() {
                     document.getElementById('delivery-address-group').style.display = 
@@ -171,23 +234,36 @@
             });
         });
 
+        function filtrarProductos() {
+            productosFiltrados = categoriaActual === 'all' ? 
+                [...productos] : 
+                productos.filter(p => p.categoria === categoriaActual);
+            renderProductos();
+        }
+
         function renderProductos() {
             const grid = document.getElementById('products-grid');
-            grid.innerHTML = productos.map(producto => `
+            if (productosFiltrados.length === 0) {
+                grid.innerHTML = '<div class="loading">No hay productos en esta categoría 😔</div>';
+                return;
+            }
+            
+            grid.innerHTML = productosFiltrados.map(producto => `
                 <div class="product-card">
-                    <img src="${producto.img}" alt="${producto.nombre}" class="product-img">
+                    <img src="${producto.img}" alt="${producto.nombre}" class="product-img" loading="lazy">
                     <div class="product-info">
                         <div class="product-name">${producto.nombre}</div>
-                        <div class="product-price">
-                            ${moneda === 'USD' ? `$${producto.precio.toFixed(2)}` : `Bs. ${ (producto.precio * tasaBCV).toFixed(2) }`}
+                        <div class="product-price" style="font-size: 1.4rem;">
+                            <strong>${moneda === 'USD' ? `$${producto.precio.toFixed(2)}` : `Bs. ${(producto.precio * tasaBCV).toLocaleString('es-VE')}`}</strong>
+                            ${moneda === 'USD' ? `<small style="color:#666;"> (~Bs. ${(producto.precio * tasaBCV).toLocaleString('es-VE')})</small>` : ''}
                         </div>
-                        <div class="product-stock">Stock: ${producto.stock} disponibles</div>
+                        <div class="product-stock">📦 Stock: ${producto.stock} unidades</div>
                         <div class="product-desc">${producto.desc}</div>
-                        <small style="color: #e74c3c;">Alergenos: ${producto.alergenos}</small>
+                        <small style="color: #e74c3c; display: block; margin-bottom: 1rem;">⚠️ Alérgenos: ${producto.alergenos}</small>
                         <button class="add-cart ${producto.stock === 0 ? 'out-stock' : ''}" 
                                 onclick="agregarAlCarrito(${producto.id})" 
                                 ${producto.stock === 0 ? 'disabled' : ''}>
-                            ${producto.stock === 0 ? 'Sin Stock' : '<i class="fas fa-cart-plus"></i> Agregar'}
+                            ${producto.stock === 0 ? '❌ Sin Stock' : `<i class="fas fa-cart-plus"></i> Agregar al Carrito`}
                         </button>
                     </div>
                 </div>
@@ -211,6 +287,15 @@
                 producto.stock--;
                 renderProductos();
                 renderCarrito();
+                // Notificación
+                const btn = event.target;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Agregado!';
+                btn.style.background = '#FFD700';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 1500);
             }
         }
 
@@ -219,19 +304,31 @@
             const cartCount = document.getElementById('cart-count');
             const cartTotal = document.getElementById('cart-total');
             
-            cartItems.innerHTML = carrito.map(item => `
-                <div class="cart-item">
-                    <span>${item.nombre} x${item.cantidad}</span>
-                    <div>
-                        <span>${moneda === 'USD' ? `$${ (item.precio * item.cantidad).toFixed(2) }` : `Bs. ${ (item.precio * tasaBCV * item.cantidad).toFixed(2) }`}</span>
-                        <button onclick="removerDelCarrito(${item.id})" style="background:none;border:none;color:#e74c3c;font-size:1.2rem;margin-left:1rem;">×</button>
+            if (carrito.length === 0) {
+                cartItems.innerHTML = '<div style="text-align:center;padding:2rem;color:#999;">Tu carrito está vacío 🛒</div>';
+            } else {
+                cartItems.innerHTML = carrito.map(item => `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${item.nombre}</strong><br>
+                            <small>x${item.cantidad} | Stock: ${item.stock}</small>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:bold;font-size:1.1rem;">
+                                ${moneda === 'USD' ? `$${ (item.precio * item.cantidad).toFixed(2) }` : `Bs. ${(item.precio * tasaBCV * item.cantidad).toLocaleString('es-VE')}`}
+                            </div>
+                            <button onclick="removerDelCarrito(${item.id})" style="background:none;border:none;color:#e74c3c;font-size:1.5rem;cursor:pointer;">×</button>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
             
             cartCount.textContent = carrito.reduce((sum, item) => sum + item.cantidad, 0);
-            const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-            cartTotal.textContent = `Total: ${moneda === 'USD' ? `$${total.toFixed(2)}` : `Bs. ${ (total * tasaBCV).toFixed(2) }`}`;
+            const totalUSD = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+            cartTotal.innerHTML = `
+                Total: ${moneda === 'USD' ? `$${totalUSD.toFixed(2)}` : `Bs. ${(totalUSD * tasaBCV).toLocaleString('es-VE')}`}
+                ${moneda === 'USD' ? `<br><small>~Bs. ${(totalUSD * tasaBCV).toLocaleString('es-VE')}</small>` : ''}
+            `;
         }
 
         function removerDelCarrito(id) {
@@ -243,67 +340,65 @@
             renderCarrito();
         }
 
-        function updateCurrencyDisplay() {
-            document.getElementById('bcv-rate').textContent = tasaBCV.toFixed(2);
-            renderProductos();
-            renderCarrito();
-        }
-
         function toggleCheckout() {
             if (carrito.length === 0) {
-                alert('Tu carrito está vacío');
+                alert('🥳 Agrega productos a tu carrito primero');
                 return;
             }
+            document.getElementById('checkout-form').scrollIntoView({behavior: 'smooth'});
             document.getElementById('checkout-form').style.display = 'block';
         }
 
         function openWhatsApp() {
-            const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-            const mensaje = `¡Hola! Quiero hacer un pedido en Tambo 🧁
+            const totalUSD = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+            const mensaje = `¡Hola Tambo! 🧁 Quiero hacer mi pedido:
 
 ` +
-                `Productos:
-${carrito.map(item => `- ${item.nombre} x${item.cantidad}`).join('
+                `🍰 *PRODUCTOS:*
+${carrito.map(item => `• ${item.nombre} x${item.cantidad}`).join('
 ')}
 
 ` +
-                `Total: ${moneda === 'USD' ? `$${total.toFixed(2)}` : `Bs. ${(total * tasaBCV).toFixed(2)}`}
+                `💰 *TOTAL:* ${moneda === 'USD' ? `$${totalUSD.toFixed(2)}` : `Bs. ${(totalUSD * tasaBCV).toLocaleString('es-VE')}`}
 ` +
-                `Dirección: Los Guayos, Sector Félix Ríos, Carabobo`;
+                `📍 *Tienda:* Los Guayos, Sector Félix Ríos, Carabobo
+
+` +
+                `⏰ ¿Cuándo puedo recoger?`;
+            
             window.open(`https://wa.me/584124567890?text=${encodeURIComponent(mensaje)}`, '_blank');
         }
 
         function confirmOrder() {
-            const name = document.getElementById('customer-name').value;
-            const phone = document.getElementById('customer-phone').value;
-            const delivery = document.querySelector('input[name="delivery"]:checked').value;
-            const address = document.getElementById('delivery-address').value;
+            const name = document.getElementById('customer-name').value.trim();
+            const phone = document.getElementById('customer-phone').value.trim();
             const voucher = document.getElementById('voucher-file').files[0];
             
             if (!name || !phone || !voucher) {
-                alert('Por favor completa todos los campos');
+                alert('Por favor completa todos los campos requeridos ⭐');
                 return;
             }
             
             const orderId = 'TAMBO-' + Date.now();
-            alert(`¡Pedido confirmado! ID: ${orderId}
-Te contactaremos pronto por WhatsApp.
-Inventario actualizado exitosamente.`);
+            const totalUSD = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
             
-            // Limpiar carrito y restablecer stock (simulación)
-            productos.forEach(p => p.stock = Math.floor(Math.random() * 10) + 1);
+            alert(`✅ *¡Pedido confirmado!* 🎉
+
+ID: ${orderId}
+Total: $${totalUSD.toFixed(2)}
+
+Te contactaremos en minutos por WhatsApp.
+📦 Inventario actualizado exitosamente.`);
+            
+            // Reset
             carrito = [];
             document.getElementById('checkout-form').style.display = 'none';
+            document.querySelector('#customer-name').value = '';
+            document.querySelector('#customer-phone').value = '';
+            document.querySelector('#voucher-file').value = '';
+            productos.forEach(p => p.stock = Math.floor(Math.random() * 8) + 3);
             renderProductos();
             renderCarrito();
-        }
-
-        function trackOrder() {
-            const trackId = document.getElementById('track-id').value;
-            if (trackId) {
-                document.getElementById('track-result').innerHTML = 
-                    `<p><strong>Pedido ${trackId}:</strong> En preparación 🚚 (ETA: 45 min)</p>`;
-            }
         }
     </script>
 </body>
