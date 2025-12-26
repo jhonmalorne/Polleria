@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Net - Tu Mejor Aliado en Tecnología</title>
+    <title>YegnoMaik - Bodega | Carabobo | Tu Mejor Aliado</title>
     <style>
-        /* Estilos basados en mejores prácticas 2025: dark mode, responsive, alto contraste [web:3][web:5] */
+        /* Paleta 2025: Naranja vibrante, crema cálida, verde lima - ideal para bodegas venezolanas [web:14][web:17][web:18] */
         :root {
-            --negro: #0a0a0a;
-            --azul-principal: #1e40af;
-            --azul-claro: #3b82f6;
-            --gris-oscuro: #1a1a1a;
-            --gris-claro: #e0e0e0;
-            --blanco-suave: #f5f5f5;
+            --naranja-principal: #FF6B35;
+            --naranja-oscuro: #E55A30;
+            --crema: #F5EFE6;
+            --verde-lima: #8AC926;
+            --azul-cobalto: #1982C4;
+            --gris-oscuro: #2C2C2C;
+            --blanco: #FFFFFF;
         }
 
         * {
@@ -23,486 +24,574 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--negro);
-            color: var(--blanco-suave);
+            background: linear-gradient(135deg, #FFF8F0 0%, var(--crema) 100%);
+            color: var(--gris-oscuro);
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
-        /* Header y Navegación responsive [web:3] */
+        /* Header fijo con blur */
         header {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-        }
-
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, var(--azul-principal), var(--azul-claro));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--gris-claro);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--azul-claro);
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .hamburger span {
-            width: 25px;
-            height: 3px;
-            background: var(--azul-claro);
-            margin: 3px 0;
-            transition: 0.3s;
-        }
-
-        /* Hero Section con animación [web:2][web:5] */
-        .hero {
-            height: 100vh;
-            background: linear-gradient(135deg, var(--negro) 0%, var(--gris-oscuro) 50%, var(--azul-principal) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%231e40af" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            animation: float 20s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .hero-content h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: slideInUp 1s ease-out;
-        }
-
-        .hero-content p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            animation: slideInUp 1s ease-out 0.2s both;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--azul-principal), var(--azul-claro));
-            color: white;
-            padding: 1rem 2.5rem;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: all 0.3s;
-            animation: slideInUp 1s ease-out 0.4s both;
-            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.4);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(30, 64, 175, 0.6);
-        }
-
-        /* Secciones de Servicios [web:6] */
-        section {
-            padding: 5rem 0;
-            max-width: 1200px;
-            margin: 0 auto;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
         }
 
         .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 0 2rem;
         }
 
-        h2 {
-            text-align: center;
-            font-size: 3rem;
-            margin-bottom: 3rem;
-            background: linear-gradient(45deg, var(--azul-principal), var(--azul-claro));
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--naranja-principal), var(--verde-lima));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Grid de Servicios responsive [web:3] */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+        .login-section {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
         }
 
-        .service-card {
-            background: var(--gris-oscuro);
-            padding: 2.5rem;
-            border-radius: 20px;
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--naranja-principal), var(--naranja-oscuro));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-success {
+            background: var(--verde-lima);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
             text-align: center;
-            transition: all 0.4s ease;
-            border: 1px solid rgba(62, 130, 246, 0.2);
+            background: linear-gradient(135deg, var(--naranja-principal) 0%, var(--azul-cobalto) 100%);
+            color: white;
             position: relative;
             overflow: hidden;
         }
 
-        .service-card::before {
-            content: '';
-            position: absolute;
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(62, 130, 246, 0.1), transparent);
-            transition: left 0.5s;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
         }
 
-        .service-card:hover::before {
-            left: 100%;
-        }
-
-        .service-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            border-color: var(--azul-claro);
-        }
-
-        .service-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(45deg, var(--azul-principal), var(--azul-claro));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Contacto */
-        .contact-form {
-            max-width: 600px;
-            margin: 3rem auto 0;
-            background: var(--gris-oscuro);
-            padding: 3rem;
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 1rem;
-            background: var(--negro);
-            border: 2px solid rgba(62, 130, 246, 0.3);
-            border-radius: 10px;
-            color: var(--blanco-suave);
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--azul-claro);
-        }
-
-        textarea {
-            height: 120px;
-            resize: vertical;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--gris-oscuro);
             text-align: center;
-            padding: 3rem 0;
-            margin-top: 5rem;
         }
 
-        /* Animaciones [web:3] */
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Main Content */
+        main {
+            min-height: 80vh;
+            padding: 2rem 0;
         }
 
-        /* Responsive Mobile-First [web:3][web:6] */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            border: 2px solid #eee;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--naranja-principal);
+            box-shadow: 0 15px 30px rgba(255,107,53,0.2);
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--naranja-principal);
+            margin: 0.5rem 0;
+        }
+
+        /* Carrito */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Tabla Inventario */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: var(--naranja-principal);
+            color: white;
+        }
+
+        /* WhatsApp */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 5px 20px rgba(37,211,102,0.5);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
-
-            .nav-links {
-                position: fixed;
-                left: -100%;
-                top: 70px;
-                flex-direction: column;
-                background-color: var(--negro);
-                width: 100%;
-                text-align: center;
-                transition: 0.3s;
-                box-shadow: 0 10px 27px rgba(0,0,0,0.5);
-                padding: 2rem 0;
-            }
-
-            .nav-links.active {
-                left: 0;
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-content p {
-                font-size: 1.2rem;
-            }
-
-            h2 {
-                font-size: 2rem;
-            }
-        }
-
-        /* Scroll suave */
-        html {
-            scroll-behavior: smooth;
+            .hero h1 { font-size: 2.5rem; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
-        <nav>
-            <div class="logo">Nexus Net</div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#hardware">Hardware</a></li>
-                <li><a href="#software">Software</a></li>
-                <li><a href="#contacto">Contacto</a></li>
-            </ul>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+        <nav class="container">
+            <div class="logo">🥫 YegnoMaik</div>
+            <div class="login-section">
+                <button class="btn btn-primary" onclick="showLogin()">Iniciar Sesión</button>
+                <div id="userStatus"></div>
             </div>
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section id="inicio" class="hero">
-        <div class="hero-content">
-            <h1>Somos Tu Mejor Aliado</h1>
-            <p>Hardware, Software, Servicios Técnicos y Soluciones Completas para Hogar y Negocio</p>
-            <a href="#servicios" class="cta-button">Descubre Nuestros Servicios</a>
-        </div>
-    </section>
-
-    <!-- Servicios Hardware -->
-    <section id="hardware">
+    <section class="hero">
         <div class="container">
-            <h2>Hardware de Calidad</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">🖥️</div>
-                    <h3>Procesadores CPU</h3>
-                    <p>Las mejores CPUs para gaming, trabajo y servidores.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">💾</div>
-                    <h3>Memoria RAM</h3>
-                    <p>RAM de alta velocidad y capacidad para cualquier necesidad.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🗜️</div>
-                    <h3>Discos Duros</h3>
-                    <p>SSD y HDD de última generación con máxima durabilidad.</p>
-                </div>
+            <h1>🥫 YegnoMaik</h1>
+            <p>Tu Mejor Aliado en Carabobo<br><small>Municipio Los Guayos, Sector Félix Ríos</small></p>
+            <div>
+                <button class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 2rem;" onclick="showClientShop()">🛒 Comprar Online</button>
             </div>
         </div>
     </section>
 
-    <!-- Servicios Software y Otros -->
-    <section id="software">
-        <div class="container">
-            <h2>Soluciones Completas</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">💻</div>
-                    <h3>Software y Sistemas</h3>
-                    <p>Programas personalizados y sistemas operativos optimizados.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">📚</div>
-                    <h3>Trabajos Escolares</h3>
-                    <p>Investigaciones, currículos y proyectos académicos profesionales.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🏪</div>
-                    <h3>Sistemas para Negocios</h3>
-                    <p>Almacén, facturación, redes y gestión completa.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🔧</div>
-                    <h3>Servicio Técnico PC</h3>
-                    <p>Reparaciones, mantenimiento y optimización de equipos.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🌐</div>
-                    <h3>Redes Hogar/Negocio</h3>
-                    <p>Instalación y configuración de redes seguras y rápidas.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">📋</div>
-                    <h3>Trámites y Seguros</h3>
-                    <p>SATEN, Seniat, INT, SAIME, seguros RCV y más.</p>
+    <!-- Cliente Dashboard -->
+    <main>
+        <div id="clientShop" class="dashboard active">
+            <div class="container">
+                <div class="section">
+                    <h2>🛒 Tienda Online</h2>
+                    <div class="products-grid" id="productsGrid"></div>
+                    <div id="cartSection" style="margin-top: 2rem; display: none;">
+                        <h3>🛍️ Carrito (<span id="cartCount">0</span>)</h3>
+                        <div id="cartItems"></div>
+                        <div style="margin-top: 1rem;">
+                            <select id="paymentMethod">
+                                <option value="bs">Bs. Venezolanos</option>
+                                <option value="usd">Dólares Americanos</option>
+                            </select>
+                            <label><input type="checkbox" id="delivery"> Delivery (+5%)</label>
+                            <label><input type="checkbox" id="credit"> Comprar a Crédito</label>
+                            <button class="btn btn-success" onclick="processOrder()" style="margin-top: 1rem;">Finalizar Compra</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Contacto -->
-    <section id="servicios">
-        <div class="container">
-            <h2 id="contacto">Contáctanos</h2>
-            <form class="contact-form" id="contactForm">
-                <div class="form-group">
-                    <input type="text" id="name" required placeholder="Tu Nombre">
+        <!-- Trabajador Dashboard -->
+        <div id="workerDash" class="dashboard">
+            <div class="container">
+                <h2>👷 Dashboard Trabajador</h2>
+                <div class="section">
+                    <h3>Caja de Ventas</h3>
+                    <input type="number" id="cashAmount" placeholder="Monto en caja Bs.">
+                    <button class="btn btn-primary" onclick="addToCash()">Agregar a Caja</button>
+                    <button class="btn btn-success" onclick="closeCash()">Cerrar Caja</button>
+                    <p>Total Caja: <span id="totalCash">0</span> Bs.</p>
                 </div>
-                <div class="form-group">
-                    <input type="email" id="email" required placeholder="Tu Email">
-                </div>
-                <div class="form-group">
-                    <select id="service" required>
-                        <option value="">Selecciona un Servicio</option>
-                        <option value="hardware">Hardware (CPU, RAM, Discos)</option>
-                        <option value="software">Software y Sistemas</option>
-                        <option value="tecnico">Servicio Técnico PC</option>
-                        <option value="redes">Sistemas de Red</option>
-                        <option value="tramites">Trámites y Seguros</option>
-                        <option value="escolar">Trabajos Escolares</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <textarea id="message" required placeholder="Describe tu necesidad..."></textarea>
-                </div>
-                <button type="submit" class="cta-button" style="width: 100%;">Enviar Consulta</button>
-            </form>
+            </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 Nexus Net - Maiquetía, Vargas, VE. Tu mejor aliado en tecnología. Todos los derechos reservados.</p>
-    </footer>
+        <!-- Gerente Dashboard -->
+        <div id="managerDash" class="dashboard">
+            <div class="container">
+                <h2>👨‍💼 Dashboard Gerente</h2>
+                <div class="section">
+                    <h3>Gestión de Inventario</h3>
+                    <table id="inventoryTable">
+                        <thead>
+                            <tr><th>Producto</th><th>Stock</th><th>Precio Bs.</th><th>Acciones</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <div style="margin-top: 2rem;">
+                        <input type="text" id="newProduct" placeholder="Nuevo producto">
+                        <input type="number" id="newStock" placeholder="Stock">
+                        <input type="number" id="newPrice" placeholder="Precio Bs.">
+                        <button class="btn btn-primary" onclick="addProduct()">Agregar Producto</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2>Iniciar Sesión</h2>
+            <select id="userType">
+                <option value="client">Cliente</option>
+                <option value="worker">Trabajador Bodega</option>
+                <option value="manager">Gerente</option>
+            </select>
+            <input type="password" id="loginPassword" placeholder="Contraseña">
+            <div style="margin-top: 1rem;">
+                <button class="btn btn-primary" onclick="login()">Entrar</button>
+                <button class="btn" onclick="closeLogin()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/584244525765?text=Hola%20YegnoMaik%2C%20necesito%20información" class="whatsapp-btn" target="_blank">💬</a>
 
     <script>
-        // JavaScript interactivo: menú móvil, header scroll, formulario [web:1]
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-        const header = document.querySelector('header');
+        // Sistema completo con localStorage [web:15][web:19][web:23]
+        let currentUser = null;
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let inventory = JSON.parse(localStorage.getItem('inventory')) || [
+            {id: 1, name: 'Arroz 1kg', stock: 50, price: 350},
+            {id: 2, name: 'Mayonesa 500gr', stock: 30, price: 540},
+            {id: 3, name: 'Espagueti 500gr', stock: 40, price: 450},
+            {id: 4, name: 'Aceite 900ml', stock: 25, price: 620},
+            {id: 5, name: 'Harina 1kg', stock: 35, price: 280}
+        ];
+        let cashBox = parseFloat(localStorage.getItem('cashBox')) || 0;
 
-        // Menú hamburguesa responsive
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProductsGrid();
+            updateCart();
+            updateInventoryTable();
+            updateCashDisplay();
+            updateUserStatus();
         });
 
-        // Header efecto scroll
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(10, 10, 10, 0.98)';
+        function showLogin() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function closeLogin() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function login() {
+            const userType = document.getElementById('userType').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (password === '123456') {
+                currentUser = userType;
+                closeLogin();
+                showDashboard();
+                updateUserStatus();
             } else {
-                header.style.background = 'rgba(10, 10, 10, 0.95)';
+                alert('Contraseña incorrecta');
             }
-        });
+        }
 
-        // Formulario con validación y simulación envío
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const toast = document.createElement('div');
-            toast.style.cssText = `
-                position: fixed; top: 20px; right: 20px; background: linear-gradient(45deg, #1e40af, #3b82f6);
-                color: white; padding: 1rem 2rem; border-radius: 10px; z-index: 10000;
-                transform: translateX(400px); transition: transform 0.3s;
-            `;
-            toast.textContent = '¡Mensaje enviado! Te contactaremos pronto.';
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.transform = 'translateX(0)';
-            }, 100);
-            setTimeout(() => {
-                toast.remove();
-                this.reset();
-            }, 4000);
-        });
+        function showDashboard() {
+            document.querySelectorAll('.dashboard').forEach(d => d.classList.remove('active'));
+            if (currentUser === 'client') {
+                document.getElementById('clientShop').classList.add('active');
+            } else if (currentUser === 'worker') {
+                document.getElementById('workerDash').classList.add('active');
+            } else if (currentUser === 'manager') {
+                document.getElementById('managerDash').classList.add('active');
+            }
+        }
 
-        // Smooth scroll para enlaces navegación
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-                navLinks.classList.remove('active');
+        function updateUserStatus() {
+            const status = document.getElementById('userStatus');
+            if (currentUser) {
+                status.innerHTML = `<span style="color: var(--verde-lima);">✓ ${currentUser.toUpperCase()}</span> 
+                <button class="btn" onclick="logout()" style="padding: 0.5rem 1rem;">Salir</button>`;
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('clientShop').classList.add('active');
+            document.querySelectorAll('.dashboard').forEach(d => {
+                if (d.id !== 'clientShop') d.classList.remove('active');
             });
-        });
+            updateUserStatus();
+        }
 
-        // Animación scroll reveal
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'slideInUp 0.8s ease-out forwards';
+        // Cliente - Tienda
+        function updateProductsGrid() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = inventory.map(product => `
+                <div class="product-card" onclick="addToCart(${product.id})">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🥫</div>
+                    <h3>${product.name}</h3>
+                    <div class="product-price">Bs. ${product.price.toLocaleString()}</div>
+                    <small>Stock: ${product.stock}</small>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(productId) {
+            const product = inventory.find(p => p.id === productId);
+            if (product.stock > 0) {
+                const cartItem = cart.find(item => item.id === productId);
+                if (cartItem) {
+                    cartItem.quantity += 1;
+                } else {
+                    cart.push({id: productId, quantity: 1});
                 }
-            });
-        });
+                updateCart();
+            } else {
+                alert('Sin stock disponible');
+            }
+        }
 
-        document.querySelectorAll('.service-card').forEach(card => {
-            observer.observe(card);
-        });
+        function updateCart() {
+            const cartSection = document.getElementById('cartSection');
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+
+            if (cart.length === 0) {
+                cartSection.style.display = 'none';
+                return;
+            }
+
+            cartSection.style.display = 'block';
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            cartItems.innerHTML = cart.map(item => {
+                const product = inventory.find(p => p.id === item.id);
+                return `
+                    <div class="cart-item">
+                        <span>${product.name} x${item.quantity}</span>
+                        <span>Bs. ${(product.price * item.quantity).toLocaleString()}</span>
+                        <button onclick="removeFromCart(${item.id})" style="background: #ff4444; color: white; border: none; padding: 0.5rem; border-radius: 5px;">Eliminar</button>
+                    </div>
+                `;
+            }).join('');
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        function processOrder() {
+            if (cart.length === 0) return;
+
+            const delivery = document.getElementById('delivery').checked;
+            const credit = document.getElementById('credit').checked;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            let total = cart.reduce((sum, item) => {
+                const product = inventory.find(p => p.id === item.id);
+                return sum + (product.price * item.quantity);
+            }, 0);
+
+            if (delivery) total *= 1.05;
+
+            const voucher = {
+                date: new Date().toLocaleString(),
+                items: cart.map(item => {
+                    const product = inventory.find(p => p.id === item.id);
+                    return `${product.name} x${item.quantity}`;
+                }),
+                total: total.toLocaleString(),
+                method: paymentMethod.toUpperCase(),
+                delivery: delivery ? 'Sí (+5%)' : 'Recojo en tienda',
+                credit: credit ? 'A Crédito' : 'Pago inmediato'
+            };
+
+            // Descontar stock
+            cart.forEach(item => {
+                const product = inventory.find(p => p.id === item.id);
+                product.stock -= item.quantity;
+            });
+
+            alert(`¡Compra exitosa!
+Voucher:
+${JSON.stringify(voucher, null, 2)}
+
+Guarda esta información o envíala por WhatsApp`);
+            
+            // Limpiar carrito y actualizar
+            cart = [];
+            updateCart();
+            updateProductsGrid();
+            updateInventoryTable();
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+        }
+
+        // Trabajador - Caja
+        function addToCash() {
+            const amount = parseFloat(document.getElementById('cashAmount').value);
+            if (amount) {
+                cashBox += amount;
+                localStorage.setItem('cashBox', cashBox);
+                updateCashDisplay();
+                document.getElementById('cashAmount').value = '';
+            }
+        }
+
+        function closeCash() {
+            if (cashBox > 0) {
+                alert(`Caja cerrada. Total del día: ${cashBox.toLocaleString()} Bs.`);
+                cashBox = 0;
+                localStorage.setItem('cashBox', cashBox);
+                updateCashDisplay();
+            }
+        }
+
+        function updateCashDisplay() {
+            document.getElementById('totalCash').textContent = cashBox.toLocaleString();
+        }
+
+        // Gerente - Inventario
+        function updateInventoryTable() {
+            const tbody = document.querySelector('#inventoryTable tbody');
+            tbody.innerHTML = inventory.map(product => `
+                <tr>
+                    <td>${product.name}</td>
+                    <td>${product.stock}</td>
+                    <td>Bs. ${product.price.toLocaleString()}</td>
+                    <td>
+                        <input type="number" id="stock_${product.id}" value="${product.stock}" style="width: 60px;">
+                        <button onclick="updateStock(${product.id})">Actualizar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateStock(productId) {
+            const stockInput = document.getElementById(`stock_${productId}`);
+            const newStock = parseInt(stockInput.value);
+            const product = inventory.find(p => p.id === productId);
+            product.stock = newStock;
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            updateProductsGrid();
+            updateInventoryTable();
+        }
+
+        function addProduct() {
+            const name = document.getElementById('newProduct').value;
+            const stock = parseInt(document.getElementById('newStock').value);
+            const price = parseFloat(document.getElementById('newPrice').value);
+
+            if (name && stock && price) {
+                const newId = Math.max(...inventory.map(p => p.id)) + 1;
+                inventory.push({id: newId, name, stock, price});
+                localStorage.setItem('inventory', JSON.stringify(inventory));
+                updateProductsGrid();
+                updateInventoryTable();
+                document.getElementById('newProduct').value = '';
+                document.getElementById('newStock').value = '';
+                document.getElementById('newPrice').value = '';
+            }
+        }
+
+        // Cliente directo
+        function showClientShop() {
+            currentUser = 'client';
+            showDashboard();
+            updateUserStatus();
+        }
     </script>
 </body>
 </html>
