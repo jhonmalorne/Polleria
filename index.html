@@ -306,7 +306,7 @@
     <div class="currency-selector">
         <button class="currency-btn active" data-currency="USD">$ USD</button>
         <button class="currency-btn" data-currency="BS">Bs. VES</button>
-        <span class="rate-display">Tasa BCV: $<span id="bcv-rate">291.35</span></span>
+        <span class="rate-display">Tasa: $<span id="bcv-rate">291.35</span></span>
     </div>
     
     <!-- HERO -->
@@ -332,7 +332,7 @@
     <!-- CONTENIDO PRINCIPAL -->
     <div class="container">
         <div class="products-grid" id="products-grid">
-            <!-- ✅ PRODUCTOS CARGAN AQUÍ INMEDIATAMENTE -->
+            <!-- ✅ PRODUCTOS CARGAN AQUÍ -->
         </div>
         
         <!-- CARRITO -->
@@ -357,7 +357,7 @@
             </div>
             <div class="form-group">
                 <label>Número WhatsApp *</label>
-                <input type="tel" id="customer-phone" placeholder="0412-XXX-XXXX">
+                <input type="tel" id="customer-phone" placeholder="0424-XXX-XXXX">
             </div>
             <div class="delivery-option">
                 <label><input type="radio" name="delivery" value="store" checked> 🏪 Recoger en Tienda</label>
@@ -383,7 +383,7 @@
     </div>
 
     <script>
-        // ✅ CATÁLOGO - PRECIOS EN USD BASE
+        // ✅ CATÁLOGO COMPLETO - PRECIOS EN USD
         const productos = [
             {id:1,nombre:"Torta Tres Leches",precio:15,stock:8,categoria:"tortas",img:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400",desc:"Bizcocho esponjoso con 3 leches. 1kg familiar.",alergenos:"Lácteos, Gluten"},
             {id:2,nombre:"Cheesecake NY",precio:18,stock:6,categoria:"tortas",img:"https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400",desc:"Estilo New York con base crujiente. 1kg.",alergenos:"Lácteos, Gluten"},
@@ -399,7 +399,7 @@
 
         let carrito = [], moneda = 'USD', tasaBCV = 291.35, categoriaActual = 'all';
 
-        // ✅ RENDER PRODUCTOS (SE EJECUTA SIEMPRE)
+        // ✅ RENDERIZAR PRODUCTOS
         function renderProductos(){
             const grid = document.getElementById('products-grid');
             const mostrar = categoriaActual === 'all' ? productos : productos.filter(p=>p.categoria===categoriaActual);
@@ -426,7 +426,7 @@
             `).join('');
         }
 
-        // ✅ CARRITO
+        // ✅ RENDERIZAR CARRITO
         function renderCarrito(){
             const itemsEl = document.getElementById('cart-items');
             const countEl = document.getElementById('cart-count');
@@ -460,7 +460,7 @@
         // ✅ FUNCIONES CARRITO
         function agregarAlCarrito(id){
             const producto = productos.find(p=>p.id===id);
-            if(producto.stock>0){
+            if(producto && producto.stock>0){
                 const item = carrito.find(i=>i.id===id);
                 if(item){
                     item.cantidad++;
@@ -475,38 +475,34 @@
 
         function removerDelCarrito(id){
             const itemIndex = carrito.findIndex(item=>item.id===id);
-            productos.find(p=>p.id===id).stock += carrito[itemIndex].cantidad;
-            carrito.splice(itemIndex,1);
-            renderProductos();
-            renderCarrito();
-        }
-
-        // ✅ TASA BCV (NO BLOQUEANTE)
-        function actualizarTasaBCV(){
-            fetch('https://api.bcv.org.ve/dolar?mode=simple', {mode:'cors'})
-            .then(r=>r.json())
-            .then(data=>{
-                tasaBCV = parseFloat(data)||38.50;
-                document.getElementById('bcv-rate').textContent = tasaBCV.toFixed(2);
+            if(itemIndex !== -1){
+                productos.find(p=>p.id===id).stock += carrito[itemIndex].cantidad;
+                carrito.splice(itemIndex,1);
                 renderProductos();
                 renderCarrito();
-            }).catch(e=>{
-                console.log('BCV fallback:'291,35);
-            });
+            }
         }
 
-        // ✅ EVENTOS PRINCIPALES
-        function scrollToProducts(){document.getElementById('products-grid').scrollIntoView({behavior:'smooth'});}
+        // ✅ FUNCIONES PRINCIPALES
+        function scrollToProducts(){
+            document.getElementById('products-grid').scrollIntoView({behavior:'smooth'});
+        }
+
         function toggleCheckout(){
-            if(carrito.length===0){return alert('🥳 Primero agrega productos al carrito');}
+            if(carrito.length===0){
+                return alert('🥳 Primero agrega productos al carrito');
+            }
             document.getElementById('checkout-form').style.display='block';
             document.getElementById('checkout-form').scrollIntoView({behavior:'smooth'});
         }
+
+        // ✅ WHATSAPP CON TU NÚMERO 04244525765
         function openWhatsApp(){
             const totalUSD = carrito.reduce((sum,item)=>sum+(item.precio*item.cantidad),0);
             const mensaje = `Hola Tambo! 🧁%0A%0A🍰 *MI PEDIDO:*%0A${carrito.map(item=>`• ${item.nombre} x${item.cantidad}`).join('%0A')}%0A%0A💰 *TOTAL:* $${totalUSD.toFixed(2)}%0A📍 Los Guayos, Sector Félix Ríos, Carabobo`;
             window.open(`https://wa.me/584244525765?text=${mensaje}`, '_blank');
         }
+
         function confirmOrder(){
             const nombre = document.getElementById('customer-name').value.trim();
             const telefono = document.getElementById('customer-phone').value.trim();
@@ -524,9 +520,9 @@
             renderCarrito();
         }
 
-        // 🚀 INICIALIZACIÓN GARANTIZADA
+        // 🚀 INICIALIZACIÓN COMPLETA
         function initApp(){
-            renderProductos(); // ✅ SIEMPRE PRIMERO
+            renderProductos(); // Carga inmediata del catálogo
             renderCarrito();
             
             // Monedas
@@ -554,18 +550,14 @@
             document.querySelectorAll('input[name="delivery"]').forEach(radio=>{
                 radio.onchange=()=>document.getElementById('delivery-address-group').style.display=radio.value==='delivery'?'block':'none';
             });
-            
-            // BCV background
-            setTimeout(actualizarTasaBCV,1500);
-            setInterval(actualizarTasaBCV,300000);
         }
 
-        // ✅ DOBLE INICIALIZACIÓN (CRÍTICA PARA GITHub PAGES)
-        if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initApp);}
-        else{initApp();}
+        // ✅ INICIALIZACIÓN GARANTIZADA
+        if(document.readyState==='loading'){
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
     </script>
 </body>
 </html>
-
-
-
