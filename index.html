@@ -1,596 +1,309 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YegnoMaik - Bodega | Carabobo | Tu Mejor Aliado</title>
+    <title>Tambo - Dulces, Postres y Panadería | Los Guayos, Carabobo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Paleta 2025: Naranja vibrante, crema cálida, verde lima - ideal para bodegas venezolanas [web:14][web:17][web:18] */
-        :root {
-            --naranja-principal: #FF6B35;
-            --naranja-oscuro: #E55A30;
-            --crema: #F5EFE6;
-            --verde-lima: #8AC926;
-            --azul-cobalto: #1982C4;
-            --gris-oscuro: #2C2C2C;
-            --blanco: #FFFFFF;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #FFF8F0 0%, var(--crema) 100%);
-            color: var(--gris-oscuro);
-            line-height: 1.6;
-        }
-
-        /* Header fijo con blur */
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, var(--naranja-principal), var(--verde-lima));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .login-section {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 25px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, var(--naranja-principal), var(--naranja-oscuro));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
-        }
-
-        .btn-success {
-            background: var(--verde-lima);
-            color: white;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 120px 0 80px;
-            text-align: center;
-            background: linear-gradient(135deg, var(--naranja-principal) 0%, var(--azul-cobalto) 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Login Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 2000;
-            backdrop-filter: blur(10px);
-        }
-
-        .modal-content {
-            background: white;
-            margin: 10% auto;
-            padding: 2rem;
-            width: 90%;
-            max-width: 400px;
-            border-radius: 20px;
-            text-align: center;
-        }
-
-        /* Main Content */
-        main {
-            min-height: 80vh;
-            padding: 2rem 0;
-        }
-
-        .dashboard {
-            display: none;
-        }
-
-        .dashboard.active {
-            display: block;
-        }
-
-        .section {
-            background: white;
-            margin: 2rem 0;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .product-card {
-            border: 2px solid #eee;
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--naranja-principal);
-            box-shadow: 0 15px 30px rgba(255,107,53,0.2);
-        }
-
-        .product-price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--naranja-principal);
-            margin: 0.5rem 0;
-        }
-
-        /* Carrito */
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        /* Tabla Inventario */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        th {
-            background: var(--naranja-principal);
-            color: white;
-        }
-
-        /* WhatsApp */
-        .whatsapp-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background: #25D366;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
-            box-shadow: 0 5px 20px rgba(37,211,102,0.5);
-            z-index: 1000;
-            text-decoration: none;
-        }
-
-        /* Responsive */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #D7BDE2 0%, #E8DAEF 100%); color: #333; }
+        
+        .header { background: linear-gradient(90deg, #4CAF50, #45a049); color: white; padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 100; }
+        .header h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .location { font-size: 0.9rem; opacity: 0.9; }
+        
+        .currency-selector { background: rgba(255,255,255,0.2); padding: 0.5rem; margin: 1rem auto; max-width: 300px; border-radius: 25px; display: flex; justify-content: center; gap: 1rem; }
+        .currency-btn { background: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        .currency-btn.active { background: #4CAF50; color: white; }
+        .rate-display { color: white; font-weight: bold; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 1rem; }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .product-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .product-card:hover { transform: translateY(-10px); }
+        .product-img { width: 100%; height: 200px; object-fit: cover; }
+        .product-info { padding: 1.5rem; }
+        .product-name { font-size: 1.3rem; font-weight: bold; color: #4CAF50; margin-bottom: 0.5rem; }
+        .product-price { font-size: 1.4rem; font-weight: bold; color: #D7BDE2; margin-bottom: 0.5rem; }
+        .product-stock { color: #f39c12; font-weight: bold; margin-bottom: 1rem; }
+        .product-desc { color: #666; margin-bottom: 1rem; font-size: 0.9rem; }
+        .add-cart { background: linear-gradient(45deg, #4CAF50, #45a049); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 25px; font-size: 1rem; cursor: pointer; width: 100%; transition: all 0.3s; }
+        .add-cart:hover { transform: scale(1.05); }
+        .out-stock { background: #ccc !important; cursor: not-allowed; }
+        
+        .cart-section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .cart-title { font-size: 1.8rem; color: #4CAF50; margin-bottom: 1rem; text-align: center; }
+        .cart-items { max-height: 300px; overflow-y: auto; margin-bottom: 1rem; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #eee; }
+        .cart-total { font-size: 1.5rem; font-weight: bold; color: #4CAF50; text-align: center; margin: 1rem 0; }
+        
+        .checkout-btn, .whatsapp-btn { width: 100%; padding: 1rem; margin: 0.5rem 0; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; }
+        .checkout-btn { background: linear-gradient(45deg, #D7BDE2, #C39BD3); color: #333; font-weight: bold; }
+        .whatsapp-btn { background: #25D366; color: white; font-weight: bold; }
+        
+        .checkout-form { display: none; background: white; padding: 2rem; border-radius: 20px; margin-top: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #4CAF50; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.8rem; border: 2px solid #D7BDE2; border-radius: 10px; font-size: 1rem; }
+        .delivery-option { display: flex; gap: 1rem; margin: 1rem 0; }
+        .delivery-option input[type="radio"] { width: auto; }
+        
+        .tracking-section { background: #f8f9fa; padding: 2rem; border-radius: 20px; margin: 2rem 0; text-align: center; }
+        .track-btn { background: #4CAF50; color: white; border: none; padding: 0.8rem 2rem; border-radius: 25px; cursor: pointer; font-size: 1rem; }
+        
+        .floating-whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 20px rgba(37,211,102,0.4); cursor: pointer; z-index: 1000; transition: transform 0.3s; }
+        .floating-whatsapp:hover { transform: scale(1.1); }
+        
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .products-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+            .products-grid { grid-template-columns: 1fr; }
+            .currency-selector { flex-direction: column; gap: 0.5rem; }
+            .header h1 { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">🥫 YegnoMaik</div>
-            <div class="login-section">
-                <button class="btn btn-primary" onclick="showLogin()">Iniciar Sesión</button>
-                <div id="userStatus"></div>
-            </div>
-        </nav>
+    <header class="header">
+        <h1><i class="fas fa-birthday-cake"></i> Tambo</h1>
+        <p class="location">Los Guayos, Sector Félix Ríos, Carabobo, Venezuela</p>
     </header>
-
-    <section class="hero">
-        <div class="container">
-            <h1>🥫 YegnoMaik</h1>
-            <p>Tu Mejor Aliado en Carabobo<br><small>Municipio Los Guayos, Sector Félix Ríos</small></p>
-            <div>
-                <button class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 2rem;" onclick="showClientShop()">🛒 Comprar Online</button>
-            </div>
+    
+    <div class="currency-selector">
+        <button class="currency-btn active" data-currency="USD">$ USD</button>
+        <button class="currency-btn" data-currency="BS">Bs. VES</button>
+        <span class="rate-display">Tasa BCV: 1 USD = <span id="bcv-rate">38.50</span> Bs.</span>
+    </div>
+    
+    <div class="container">
+        <div class="products-grid" id="products-grid">
+            <!-- Productos se cargan con JS -->
         </div>
-    </section>
-
-    <!-- Cliente Dashboard -->
-    <main>
-        <div id="clientShop" class="dashboard active">
-            <div class="container">
-                <div class="section">
-                    <h2>🛒 Tienda Online</h2>
-                    <div class="products-grid" id="productsGrid"></div>
-                    <div id="cartSection" style="margin-top: 2rem; display: none;">
-                        <h3>🛍️ Carrito (<span id="cartCount">0</span>)</h3>
-                        <div id="cartItems"></div>
-                        <div style="margin-top: 1rem;">
-                            <select id="paymentMethod">
-                                <option value="bs">Bs. Venezolanos</option>
-                                <option value="usd">Dólares Americanos</option>
-                            </select>
-                            <label><input type="checkbox" id="delivery"> Delivery (+5%)</label>
-                            <label><input type="checkbox" id="credit"> Comprar a Crédito</label>
-                            <button class="btn btn-success" onclick="processOrder()" style="margin-top: 1rem;">Finalizar Compra</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        
+        <div class="cart-section">
+            <h2 class="cart-title"><i class="fas fa-shopping-cart"></i> Carrito (<span id="cart-count">0</span>)</h2>
+            <div class="cart-items" id="cart-items"></div>
+            <div class="cart-total" id="cart-total">Total: $0.00</div>
+            <button class="whatsapp-btn" onclick="openWhatsApp()">
+                <i class="fab fa-whatsapp"></i> Pedir por WhatsApp
+            </button>
+            <button class="checkout-btn" onclick="toggleCheckout()">
+                <i class="fas fa-credit-card"></i> Enviar Voucher
+            </button>
         </div>
-
-        <!-- Trabajador Dashboard -->
-        <div id="workerDash" class="dashboard">
-            <div class="container">
-                <h2>👷 Dashboard Trabajador</h2>
-                <div class="section">
-                    <h3>Caja de Ventas</h3>
-                    <input type="number" id="cashAmount" placeholder="Monto en caja Bs.">
-                    <button class="btn btn-primary" onclick="addToCash()">Agregar a Caja</button>
-                    <button class="btn btn-success" onclick="closeCash()">Cerrar Caja</button>
-                    <p>Total Caja: <span id="totalCash">0</span> Bs.</p>
-                </div>
+        
+        <div class="checkout-form" id="checkout-form">
+            <h3><i class="fas fa-receipt"></i> Confirmar Pedido</h3>
+            <div class="form-group">
+                <label>Nombre Completo</label>
+                <input type="text" id="customer-name" required>
             </div>
+            <div class="form-group">
+                <label>Número WhatsApp</label>
+                <input type="tel" id="customer-phone" required>
+            </div>
+            <div class="delivery-option">
+                <label><input type="radio" name="delivery" value="store" checked> Recoger en Tienda</label>
+                <label><input type="radio" name="delivery" value="delivery"> Delivery</label>
+            </div>
+            <div class="form-group" id="delivery-address-group" style="display:none;">
+                <label>Dirección de Entrega</label>
+                <input type="text" id="delivery-address" placeholder="Escribe tu dirección o comparte desde Google Maps">
+            </div>
+            <div class="form-group">
+                <label>Voucher de Pago</label>
+                <input type="file" id="voucher-file" accept="image/*">
+            </div>
+            <button class="whatsapp-btn" onclick="confirmOrder()">Confirmar Pedido</button>
         </div>
-
-        <!-- Gerente Dashboard -->
-        <div id="managerDash" class="dashboard">
-            <div class="container">
-                <h2>👨‍💼 Dashboard Gerente</h2>
-                <div class="section">
-                    <h3>Gestión de Inventario</h3>
-                    <table id="inventoryTable">
-                        <thead>
-                            <tr><th>Producto</th><th>Stock</th><th>Precio Bs.</th><th>Acciones</th></tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                    <div style="margin-top: 2rem;">
-                        <input type="text" id="newProduct" placeholder="Nuevo producto">
-                        <input type="number" id="newStock" placeholder="Stock">
-                        <input type="number" id="newPrice" placeholder="Precio Bs.">
-                        <button class="btn btn-primary" onclick="addProduct()">Agregar Producto</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <h2>Iniciar Sesión</h2>
-            <select id="userType">
-                <option value="client">Cliente</option>
-                <option value="worker">Trabajador Bodega</option>
-                <option value="manager">Gerente</option>
-            </select>
-            <input type="password" id="loginPassword" placeholder="Contraseña">
-            <div style="margin-top: 1rem;">
-                <button class="btn btn-primary" onclick="login()">Entrar</button>
-                <button class="btn" onclick="closeLogin()">Cancelar</button>
-            </div>
+        
+        <div class="tracking-section">
+            <h3>Seguimiento de Pedidos</h3>
+            <input type="text" id="track-id" placeholder="ID de Pedido">
+            <button class="track-btn" onclick="trackOrder()">Rastrear</button>
+            <div id="track-result"></div>
         </div>
     </div>
-
-    <a href="https://wa.me/584244525765?text=Hola%20YegnoMaik%2C%20necesito%20información" class="whatsapp-btn" target="_blank">💬</a>
+    
+    <div class="floating-whatsapp" onclick="openWhatsApp()">
+        <i class="fab fa-whatsapp"></i>
+    </div>
 
     <script>
-        // Sistema completo con localStorage [web:15][web:19][web:23]
-        let currentUser = null;
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let inventory = JSON.parse(localStorage.getItem('inventory')) || [
-            {id: 1, name: 'Arroz 1kg', stock: 50, price: 350},
-            {id: 2, name: 'Mayonesa 500gr', stock: 30, price: 540},
-            {id: 3, name: 'Espagueti 500gr', stock: 40, price: 450},
-            {id: 4, name: 'Aceite 900ml', stock: 25, price: 620},
-            {id: 5, name: 'Harina 1kg', stock: 35, price: 280}
+        // Productos de ejemplo con stock
+        const productos = [
+            { id: 1, nombre: "Torta Tres Leches", precio: 15, stock: 8, img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400", desc: "Bizcocho esponjoso con leche condensada, evaporada y crema. Ingredientes: Harina, huevos, leche, azúcar. Sin nueces.", alergenos: "Lácteos, Gluten" },
+            { id: 2, nombre: "Cheesecake NY", precio: 18, stock: 6, img: "https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400", desc: "Clásico cheesecake con base de galleta. Ingredientes: Queso crema, galleta maría, azúcar glass.", alergenos: "Lácteos, Gluten" },
+            { id: 3, nombre: "Pan Dulce Navideño", precio: 8, stock: 12, img: "https://images.unsplash.com/photo-1603048297194-8f7d9e7f8e7a?w=400", desc: "Pan dulce tradicional con frutas confitadas. 1kg.", alergenos: "Gluten, Huevos" },
+            { id: 4, nombre: "Cachitos", precio: 2.5, stock: 24, img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400", desc: "Cachitos rellenos de jamón y queso. Unidad.", alergenos: "Gluten, Lácteos" },
+            { id: 5, nombre: "Tequeños Premium", precio: 4, stock: 15, img: "https://images.unsplash.com/photo-1621996346565-e3adc652b4a4?w=400", desc: "Tequeños artesanales con queso blanco de cabra. 6 unidades.", alergenos: "Gluten, Lácteos" },
+            { id: 6, nombre: "Suspiros", precio: 3, stock: 20, img: "https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400", desc: "Suspiros venezolanos con manjar blanco. Docena.", alergenos: "Huevos, Lácteos" },
+            { id: 7, nombre: "Majarete", precio: 5, stock: 10, img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400", desc: "Majarete cremoso con coco fresco. Porción individual.", alergenos: "Lácteos" },
+            { id: 8, nombre: "Croissants", precio: 1.5, stock: 30, img: "https://images.unsplash.com/photo-1603048297194-8f7d9e7f8e7a?w=400", desc: "Croissants hojaldrados recién horneados. Unidad.", alergenos: "Gluten, Lácteos, Huevos" },
+            { id: 9, nombre: "Torticas de Carite", precio: 2, stock: 18, img: "https://images.unsplash.com/photo-1621996346565-e3adc652b4a4?w=400", desc: "Torticas crujientes de carite del día. Docena.", alergenos: "Gluten, Pescado" },
+            { id: 10, nombre: "Bienmesabe", precio: 12, stock: 5, img: "https://images.unsplash.com/photo-1562440499-64e194a518ed?w=400", desc: "Bizcocho de coco con merengue y almíbar. Familiar.", alergenos: "Huevos, Lácteos" }
         ];
-        let cashBox = parseFloat(localStorage.getItem('cashBox')) || 0;
 
-        // Inicializar
+        let carrito = [];
+        let moneda = 'USD';
+        let tasaBCV = 38.50; // Simulación - en producción conectar a API BCV
+
+        // Inicializar página
         document.addEventListener('DOMContentLoaded', function() {
-            updateProductsGrid();
-            updateCart();
-            updateInventoryTable();
-            updateCashDisplay();
-            updateUserStatus();
+            renderProductos();
+            updateCurrencyDisplay();
+            document.querySelectorAll('.currency-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelector('.currency-btn.active').classList.remove('active');
+                    this.classList.add('active');
+                    moneda = this.dataset.currency;
+                    updateCurrencyDisplay();
+                    renderCarrito();
+                });
+            });
+            
+            document.querySelectorAll('input[name="delivery"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    document.getElementById('delivery-address-group').style.display = 
+                        this.value === 'delivery' ? 'block' : 'none';
+                });
+            });
         });
 
-        function showLogin() {
-            document.getElementById('loginModal').style.display = 'block';
-        }
-
-        function closeLogin() {
-            document.getElementById('loginModal').style.display = 'none';
-        }
-
-        function login() {
-            const userType = document.getElementById('userType').value;
-            const password = document.getElementById('loginPassword').value;
-
-            if (password === '123456') {
-                currentUser = userType;
-                closeLogin();
-                showDashboard();
-                updateUserStatus();
-            } else {
-                alert('Contraseña incorrecta');
-            }
-        }
-
-        function showDashboard() {
-            document.querySelectorAll('.dashboard').forEach(d => d.classList.remove('active'));
-            if (currentUser === 'client') {
-                document.getElementById('clientShop').classList.add('active');
-            } else if (currentUser === 'worker') {
-                document.getElementById('workerDash').classList.add('active');
-            } else if (currentUser === 'manager') {
-                document.getElementById('managerDash').classList.add('active');
-            }
-        }
-
-        function updateUserStatus() {
-            const status = document.getElementById('userStatus');
-            if (currentUser) {
-                status.innerHTML = `<span style="color: var(--verde-lima);">✓ ${currentUser.toUpperCase()}</span> 
-                <button class="btn" onclick="logout()" style="padding: 0.5rem 1rem;">Salir</button>`;
-            }
-        }
-
-        function logout() {
-            currentUser = null;
-            document.getElementById('clientShop').classList.add('active');
-            document.querySelectorAll('.dashboard').forEach(d => {
-                if (d.id !== 'clientShop') d.classList.remove('active');
-            });
-            updateUserStatus();
-        }
-
-        // Cliente - Tienda
-        function updateProductsGrid() {
-            const grid = document.getElementById('productsGrid');
-            grid.innerHTML = inventory.map(product => `
-                <div class="product-card" onclick="addToCart(${product.id})">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🥫</div>
-                    <h3>${product.name}</h3>
-                    <div class="product-price">Bs. ${product.price.toLocaleString()}</div>
-                    <small>Stock: ${product.stock}</small>
+        function renderProductos() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = productos.map(producto => `
+                <div class="product-card">
+                    <img src="${producto.img}" alt="${producto.nombre}" class="product-img">
+                    <div class="product-info">
+                        <div class="product-name">${producto.nombre}</div>
+                        <div class="product-price">
+                            ${moneda === 'USD' ? `$${producto.precio.toFixed(2)}` : `Bs. ${ (producto.precio * tasaBCV).toFixed(2) }`}
+                        </div>
+                        <div class="product-stock">Stock: ${producto.stock} disponibles</div>
+                        <div class="product-desc">${producto.desc}</div>
+                        <small style="color: #e74c3c;">Alergenos: ${producto.alergenos}</small>
+                        <button class="add-cart ${producto.stock === 0 ? 'out-stock' : ''}" 
+                                onclick="agregarAlCarrito(${producto.id})" 
+                                ${producto.stock === 0 ? 'disabled' : ''}>
+                            ${producto.stock === 0 ? 'Sin Stock' : '<i class="fas fa-cart-plus"></i> Agregar'}
+                        </button>
+                    </div>
                 </div>
             `).join('');
         }
 
-        function addToCart(productId) {
-            const product = inventory.find(p => p.id === productId);
-            if (product.stock > 0) {
-                const cartItem = cart.find(item => item.id === productId);
-                if (cartItem) {
-                    cartItem.quantity += 1;
+        function agregarAlCarrito(id) {
+            const producto = productos.find(p => p.id === id);
+            if (producto.stock > 0) {
+                const itemEnCarrito = carrito.find(item => item.id === id);
+                if (itemEnCarrito) {
+                    if (itemEnCarrito.cantidad < producto.stock) {
+                        itemEnCarrito.cantidad++;
+                    } else {
+                        alert('No hay más stock disponible');
+                        return;
+                    }
                 } else {
-                    cart.push({id: productId, quantity: 1});
+                    carrito.push({ ...producto, cantidad: 1 });
                 }
-                updateCart();
-            } else {
-                alert('Sin stock disponible');
+                producto.stock--;
+                renderProductos();
+                renderCarrito();
             }
         }
 
-        function updateCart() {
-            const cartSection = document.getElementById('cartSection');
-            const cartItems = document.getElementById('cartItems');
-            const cartCount = document.getElementById('cartCount');
+        function renderCarrito() {
+            const cartItems = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const cartTotal = document.getElementById('cart-total');
+            
+            cartItems.innerHTML = carrito.map(item => `
+                <div class="cart-item">
+                    <span>${item.nombre} x${item.cantidad}</span>
+                    <div>
+                        <span>${moneda === 'USD' ? `$${ (item.precio * item.cantidad).toFixed(2) }` : `Bs. ${ (item.precio * tasaBCV * item.cantidad).toFixed(2) }`}</span>
+                        <button onclick="removerDelCarrito(${item.id})" style="background:none;border:none;color:#e74c3c;font-size:1.2rem;margin-left:1rem;">×</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            cartCount.textContent = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+            const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+            cartTotal.textContent = `Total: ${moneda === 'USD' ? `$${total.toFixed(2)}` : `Bs. ${ (total * tasaBCV).toFixed(2) }`}`;
+        }
 
-            if (cart.length === 0) {
-                cartSection.style.display = 'none';
+        function removerDelCarrito(id) {
+            const itemIndex = carrito.findIndex(item => item.id === id);
+            const producto = productos.find(p => p.id === id);
+            producto.stock += carrito[itemIndex].cantidad;
+            carrito.splice(itemIndex, 1);
+            renderProductos();
+            renderCarrito();
+        }
+
+        function updateCurrencyDisplay() {
+            document.getElementById('bcv-rate').textContent = tasaBCV.toFixed(2);
+            renderProductos();
+            renderCarrito();
+        }
+
+        function toggleCheckout() {
+            if (carrito.length === 0) {
+                alert('Tu carrito está vacío');
                 return;
             }
-
-            cartSection.style.display = 'block';
-            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-            cartItems.innerHTML = cart.map(item => {
-                const product = inventory.find(p => p.id === item.id);
-                return `
-                    <div class="cart-item">
-                        <span>${product.name} x${item.quantity}</span>
-                        <span>Bs. ${(product.price * item.quantity).toLocaleString()}</span>
-                        <button onclick="removeFromCart(${item.id})" style="background: #ff4444; color: white; border: none; padding: 0.5rem; border-radius: 5px;">Eliminar</button>
-                    </div>
-                `;
-            }).join('');
-
-            localStorage.setItem('cart', JSON.stringify(cart));
+            document.getElementById('checkout-form').style.display = 'block';
         }
 
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            updateCart();
+        function openWhatsApp() {
+            const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+            const mensaje = `¡Hola! Quiero hacer un pedido en Tambo 🧁
+
+` +
+                `Productos:
+${carrito.map(item => `- ${item.nombre} x${item.cantidad}`).join('
+')}
+
+` +
+                `Total: ${moneda === 'USD' ? `$${total.toFixed(2)}` : `Bs. ${(total * tasaBCV).toFixed(2)}`}
+` +
+                `Dirección: Los Guayos, Sector Félix Ríos, Carabobo`;
+            window.open(`https://wa.me/584124567890?text=${encodeURIComponent(mensaje)}`, '_blank');
         }
 
-        function processOrder() {
-            if (cart.length === 0) return;
-
-            const delivery = document.getElementById('delivery').checked;
-            const credit = document.getElementById('credit').checked;
-            const paymentMethod = document.getElementById('paymentMethod').value;
-
-            let total = cart.reduce((sum, item) => {
-                const product = inventory.find(p => p.id === item.id);
-                return sum + (product.price * item.quantity);
-            }, 0);
-
-            if (delivery) total *= 1.05;
-
-            const voucher = {
-                date: new Date().toLocaleString(),
-                items: cart.map(item => {
-                    const product = inventory.find(p => p.id === item.id);
-                    return `${product.name} x${item.quantity}`;
-                }),
-                total: total.toLocaleString(),
-                method: paymentMethod.toUpperCase(),
-                delivery: delivery ? 'Sí (+5%)' : 'Recojo en tienda',
-                credit: credit ? 'A Crédito' : 'Pago inmediato'
-            };
-
-            // Descontar stock
-            cart.forEach(item => {
-                const product = inventory.find(p => p.id === item.id);
-                product.stock -= item.quantity;
-            });
-
-            alert(`¡Compra exitosa!
-Voucher:
-${JSON.stringify(voucher, null, 2)}
-
-Guarda esta información o envíala por WhatsApp`);
+        function confirmOrder() {
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            const delivery = document.querySelector('input[name="delivery"]:checked').value;
+            const address = document.getElementById('delivery-address').value;
+            const voucher = document.getElementById('voucher-file').files[0];
             
-            // Limpiar carrito y actualizar
-            cart = [];
-            updateCart();
-            updateProductsGrid();
-            updateInventoryTable();
-            localStorage.setItem('inventory', JSON.stringify(inventory));
-        }
-
-        // Trabajador - Caja
-        function addToCash() {
-            const amount = parseFloat(document.getElementById('cashAmount').value);
-            if (amount) {
-                cashBox += amount;
-                localStorage.setItem('cashBox', cashBox);
-                updateCashDisplay();
-                document.getElementById('cashAmount').value = '';
+            if (!name || !phone || !voucher) {
+                alert('Por favor completa todos los campos');
+                return;
             }
+            
+            const orderId = 'TAMBO-' + Date.now();
+            alert(`¡Pedido confirmado! ID: ${orderId}
+Te contactaremos pronto por WhatsApp.
+Inventario actualizado exitosamente.`);
+            
+            // Limpiar carrito y restablecer stock (simulación)
+            productos.forEach(p => p.stock = Math.floor(Math.random() * 10) + 1);
+            carrito = [];
+            document.getElementById('checkout-form').style.display = 'none';
+            renderProductos();
+            renderCarrito();
         }
 
-        function closeCash() {
-            if (cashBox > 0) {
-                alert(`Caja cerrada. Total del día: ${cashBox.toLocaleString()} Bs.`);
-                cashBox = 0;
-                localStorage.setItem('cashBox', cashBox);
-                updateCashDisplay();
+        function trackOrder() {
+            const trackId = document.getElementById('track-id').value;
+            if (trackId) {
+                document.getElementById('track-result').innerHTML = 
+                    `<p><strong>Pedido ${trackId}:</strong> En preparación 🚚 (ETA: 45 min)</p>`;
             }
-        }
-
-        function updateCashDisplay() {
-            document.getElementById('totalCash').textContent = cashBox.toLocaleString();
-        }
-
-        // Gerente - Inventario
-        function updateInventoryTable() {
-            const tbody = document.querySelector('#inventoryTable tbody');
-            tbody.innerHTML = inventory.map(product => `
-                <tr>
-                    <td>${product.name}</td>
-                    <td>${product.stock}</td>
-                    <td>Bs. ${product.price.toLocaleString()}</td>
-                    <td>
-                        <input type="number" id="stock_${product.id}" value="${product.stock}" style="width: 60px;">
-                        <button onclick="updateStock(${product.id})">Actualizar</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function updateStock(productId) {
-            const stockInput = document.getElementById(`stock_${productId}`);
-            const newStock = parseInt(stockInput.value);
-            const product = inventory.find(p => p.id === productId);
-            product.stock = newStock;
-            localStorage.setItem('inventory', JSON.stringify(inventory));
-            updateProductsGrid();
-            updateInventoryTable();
-        }
-
-        function addProduct() {
-            const name = document.getElementById('newProduct').value;
-            const stock = parseInt(document.getElementById('newStock').value);
-            const price = parseFloat(document.getElementById('newPrice').value);
-
-            if (name && stock && price) {
-                const newId = Math.max(...inventory.map(p => p.id)) + 1;
-                inventory.push({id: newId, name, stock, price});
-                localStorage.setItem('inventory', JSON.stringify(inventory));
-                updateProductsGrid();
-                updateInventoryTable();
-                document.getElementById('newProduct').value = '';
-                document.getElementById('newStock').value = '';
-                document.getElementById('newPrice').value = '';
-            }
-        }
-
-        // Cliente directo
-        function showClientShop() {
-            currentUser = 'client';
-            showDashboard();
-            updateUserStatus();
         }
     </script>
 </body>
