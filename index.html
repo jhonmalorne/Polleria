@@ -13,11 +13,13 @@
         :root { --primary-color: #0d6efd; --secondary-color: #6c757d; }
         body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .nexus-brand { font-weight: bold; color: var(--primary-color); }
-        .section-card { display: none; animation: fadeIn 0.5s; }
+        .section-card { display: none; animation: fadeIn 0.4s; }
         .section-card.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .currency-badge { font-size: 0.9em; font-weight: bold; }
-        .stock-warning { color: red; font-weight: bold; }
+        .stock-warning { color: red; font-weight: bold; background-color: #ffe6e6; }
+        /* Ajuste para que el carrito siempre esté visible si es necesario */
+        .cart-sticky { position: sticky; top: 80px; }
     </style>
 </head>
 <body>
@@ -33,12 +35,14 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link active" href="#" onclick="showSection('pos')"><i class="bi bi-cart"></i> Ventas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('inventory')"><i class="bi bi-boxes"></i> Almacén/Inventario</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('inventory')"><i class="bi bi-boxes"></i> Almacén</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('credits')"><i class="bi bi-people"></i> Fiados</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('admin')"><i class="bi bi-file-earmark-spreadsheet"></i> Cierre y Reportes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('admin')"><i class="bi bi-file-earmark-spreadsheet"></i> Cierre/Reportes</a></li>
                 </ul>
-                <span class="text-white me-3" id="tasa-display">Cargando Tasa...</span>
-                <span class="text-white small">Soporte: 0424-4525765</span>
+                <div class="d-flex flex-column align-items-end text-white">
+                    <span id="tasa-display" class="badge bg-secondary fs-6">Cargando Tasa...</span>
+                    <span class="small" style="font-size: 0.75rem;">Soporte: 0424-4525765</span>
+                </div>
             </div>
         </div>
     </nav>
@@ -48,16 +52,19 @@
         <div id="pos" class="section-card active">
             <div class="row">
                 <div class="col-md-8">
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-primary text-white">Catálogo de Productos</div>
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between">
+                            <span><i class="bi bi-grid-3x3-gap"></i> Catálogo de Productos</span>
+                            <small id="last-update-api"></small>
+                        </div>
                         <div class="card-body">
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                <input type="text" id="searchProduct" class="form-control" placeholder="Buscar producto..." onkeyup="renderCatalog()">
+                                <input type="text" id="searchProduct" class="form-control" placeholder="Buscar por nombre..." onkeyup="renderCatalog()">
                             </div>
-                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-                                <table class="table table-hover">
-                                    <thead><tr><th>Producto</th><th>Stock</th><th>Precio $</th><th>Precio Bs</th><th>Acción</th></tr></thead>
+                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light"><tr><th>Producto</th><th>Stock</th><th>Precio $</th><th>Precio Bs</th><th>Agregar</th></tr></thead>
                                     <tbody id="catalog-body"></tbody>
                                 </table>
                             </div>
@@ -65,25 +72,34 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card shadow">
-                        <div class="card-header bg-success text-white">Carrito de Compra</div>
-                        <div class="card-body">
-                            <ul id="cart-list" class="list-group mb-3"></ul>
-                            <h4 class="d-flex justify-content-between"><span>Total:</span> <span id="cart-total">$0.00</span></h4>
-                            <h5 class="text-end text-muted" id="cart-total-bs">Bs 0.00</h5>
-                            <hr>
+                    <div class="card shadow border-0 cart-sticky">
+                        <div class="card-header bg-success text-white"><i class="bi bi-cart4"></i> Carrito de Compra</div>
+                        <div class="card-body p-2">
+                            <ul id="cart-list" class="list-group list-group-flush mb-3" style="max-height: 250px; overflow-y: auto;"></ul>
+                            
+                            <div class="bg-light p-3 rounded mb-3">
+                                <h4 class="d-flex justify-content-between fw-bold"><span>Total:</span> <span id="cart-total">$0.00</span></h4>
+                                <h5 class="text-end text-primary" id="cart-total-bs">Bs 0.00</h5>
+                            </div>
+
                             <form id="sale-form">
-                                <input type="text" class="form-control mb-2" id="clientName" placeholder="Cliente (Opcional)">
-                                <input type="text" class="form-control mb-2" id="clientPhone" placeholder="Teléfono (Opcional)">
+                                <div class="mb-2">
+                                    <input type="text" class="form-control form-control-sm" id="clientName" placeholder="Nombre Cliente (Opcional)">
+                                </div>
+                                <div class="mb-2">
+                                    <input type="tel" class="form-control form-control-sm" id="clientPhone" placeholder="Teléfono (Opcional)">
+                                </div>
                                 <select class="form-select mb-3" id="paymentMethod" required onchange="toggleCreditWarning()">
-                                    <option value="Efectivo">Efectivo</option>
+                                    <option value="Efectivo" selected>Efectivo</option>
                                     <option value="Pago Movil">Pago Móvil</option>
                                     <option value="Divisas USD">Divisas USD</option>
                                     <option value="Biopago">Biopago</option>
                                     <option value="Transferencia">Transferencia</option>
-                                    <option value="Fiado">Fiado (Crédito)</option>
+                                    <option value="Fiado">⚠️ FIADO (Crédito)</option>
                                 </select>
-                                <button type="button" class="btn btn-success w-100" onclick="processSale()">Procesar Venta</button>
+                                <button type="button" class="btn btn-success w-100 py-2 fw-bold" onclick="processSale()">
+                                    <i class="bi bi-check-circle"></i> COBRAR
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -92,36 +108,41 @@
         </div>
 
         <div id="inventory" class="section-card">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-secondary text-white">Gestión de Stock (Ingreso/Egreso)</div>
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-header bg-secondary text-white"><i class="bi bi-clipboard-data"></i> Gestión de Stock</div>
                 <div class="card-body">
-                    <form id="inventory-form" class="row g-3">
+                    <form id="inventory-form" class="row g-2 align-items-end">
                         <div class="col-md-3">
-                            <input type="text" class="form-control" id="inv-product" placeholder="Nombre Producto" required>
+                            <label class="small">Nombre Producto</label>
+                            <input type="text" class="form-control" id="inv-product" required>
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" id="inv-price" placeholder="Precio Unit. ($)" step="0.01" required>
+                            <label class="small">Precio Unit. ($)</label>
+                            <input type="number" class="form-control" id="inv-price" step="0.01" required>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" id="inv-char" placeholder="Características">
+                            <label class="small">Característica (ej: Grande)</label>
+                            <input type="text" class="form-control" id="inv-char">
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" id="inv-qty" placeholder="Cantidad" required>
+                            <label class="small">Cantidad</label>
+                            <input type="number" class="form-control" id="inv-qty" required>
                         </div>
                         <div class="col-md-3">
-                            <input type="text" class="form-control" id="inv-resp" placeholder="Responsable" required>
+                            <label class="small">Responsable</label>
+                            <input type="text" class="form-control" id="inv-resp" required>
                         </div>
-                        <div class="col-md-12 text-end">
-                             <button type="button" class="btn btn-danger" onclick="updateStock('egreso')"><i class="bi bi-dash-circle"></i> Egreso/Pérdida</button>
-                             <button type="button" class="btn btn-primary" onclick="updateStock('ingreso')"><i class="bi bi-plus-circle"></i> Ingreso/Compra</button>
+                        <div class="col-md-12 text-end mt-3">
+                             <button type="button" class="btn btn-outline-danger me-2" onclick="updateStock('egreso')"><i class="bi bi-dash-circle"></i> Retirar/Pérdida</button>
+                             <button type="button" class="btn btn-primary" onclick="updateStock('ingreso')"><i class="bi bi-plus-circle"></i> Ingresar Mercancía</button>
                         </div>
                     </form>
                 </div>
             </div>
             
-            <h5 class="mt-4">Historial de Movimientos (Ingresos y Egresos)</h5>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="movements-table">
+            <h5 class="mt-4 text-secondary">Historial de Movimientos</h5>
+            <div class="table-responsive bg-white shadow-sm rounded">
+                <table class="table table-striped table-hover mb-0" id="movements-table">
                     <thead class="table-dark">
                         <tr>
                             <th>Hora</th>
@@ -129,7 +150,6 @@
                             <th>Tipo</th>
                             <th>Cant.</th>
                             <th>Producto</th>
-                            <th>Características</th>
                         </tr>
                     </thead>
                     <tbody id="movements-body"></tbody>
@@ -139,18 +159,18 @@
 
         <div id="credits" class="section-card">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3>Control de Cuentas por Cobrar (Fiado)</h3>
-                <button class="btn btn-success" onclick="exportTableToExcel('credits-table', 'Control_Fiados')"><i class="bi bi-file-excel"></i> Exportar Excel</button>
+                <h3 class="text-primary"><i class="bi bi-notebook"></i> Cuentas por Cobrar</h3>
+                <button class="btn btn-success" onclick="exportTableToExcel('credits-table', 'Reporte_Fiados')"><i class="bi bi-file-excel"></i> Descargar Excel</button>
             </div>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="credits-table">
-                    <thead class="table-warning">
+            <div class="table-responsive bg-white shadow-sm rounded">
+                <table class="table table-bordered table-hover mb-0" id="credits-table">
+                    <thead class="bg-warning text-dark">
                         <tr>
                             <th>Deudor</th>
                             <th>Teléfono</th>
                             <th>Producto</th>
-                            <th>Valor ($)</th>
-                            <th>Valor (Bs) Hoy</th>
+                            <th>Deuda ($)</th>
+                            <th>Deuda (Bs Hoy)</th>
                             <th>Estado</th>
                             <th>Acción</th>
                         </tr>
@@ -163,31 +183,31 @@
         <div id="admin" class="section-card">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="card text-center mb-4 border-danger">
-                        <div class="card-header bg-danger text-white">CIERRE DE CAJA</div>
+                    <div class="card text-center mb-4 border-danger shadow-sm">
+                        <div class="card-header bg-danger text-white fw-bold">CIERRE DE CAJA</div>
                         <div class="card-body">
-                            <p>Esta acción borrará las ventas del día para iniciar un nuevo turno.</p>
-                            <input type="text" id="close-resp" class="form-control mb-3" placeholder="Nombre Responsable (Obligatorio)">
-                            <button class="btn btn-danger w-100" onclick="closeRegister()">REALIZAR CIERRE</button>
+                            <p class="text-muted">Al cerrar caja, las ventas se exportan a Excel y el contador se reinicia a cero.</p>
+                            <input type="text" id="close-resp" class="form-control mb-3" placeholder="Nombre del Responsable">
+                            <button class="btn btn-danger w-100" onclick="closeRegister()"><i class="bi bi-lock-fill"></i> CERRAR TURNO</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card mb-4">
-                        <div class="card-header">Exportar Datos</div>
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-dark text-white">Reportes</div>
                         <div class="card-body d-grid gap-2">
-                            <button class="btn btn-primary" onclick="exportSales()"><i class="bi bi-cart-check"></i> Exportar Ventas del Día</button>
-                            <button class="btn btn-secondary" onclick="exportInventory()"><i class="bi bi-box-seam"></i> Exportar Stock Actual</button>
+                            <button class="btn btn-outline-primary" onclick="exportSales()"><i class="bi bi-download"></i> Descargar Ventas de Hoy</button>
+                            <button class="btn btn-outline-secondary" onclick="exportInventory()"><i class="bi bi-box-seam"></i> Descargar Inventario Total</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <h5>Ventas del Día (Actual)</h5>
-            <div class="table-responsive">
-                <table class="table table-sm" id="sales-table">
-                    <thead>
-                        <tr><th>Hora</th><th>Vendedor</th><th>Productos</th><th>Cliente</th><th>Pago</th><th>Total $</th></tr>
+            <h5 class="text-secondary">Registro de Ventas (Turno Actual)</h5>
+            <div class="table-responsive bg-white shadow-sm rounded">
+                <table class="table table-sm table-hover mb-0" id="sales-table">
+                    <thead class="table-light">
+                        <tr><th>Hora</th><th>Vendedor</th><th>Detalle</th><th>Cliente</th><th>Método</th><th>Total $</th></tr>
                     </thead>
                     <tbody id="sales-body"></tbody>
                 </table>
@@ -197,159 +217,242 @@
     </div>
 
     <script>
-        // --- ESTADO INICIAL ---
+        // --- 1. GESTIÓN DE ESTADO (BASE DE DATOS LOCAL) ---
         let products = JSON.parse(localStorage.getItem('nexus_products')) || [];
         let movements = JSON.parse(localStorage.getItem('nexus_movements')) || [];
         let sales = JSON.parse(localStorage.getItem('nexus_sales')) || [];
         let credits = JSON.parse(localStorage.getItem('nexus_credits')) || [];
         let cart = [];
-        let dollarRate = 0;
+        let dollarRate = 0; // Se llenará con la API
 
-        // --- INICIALIZACIÓN ---
+        // --- 2. INICIALIZACIÓN ---
         document.addEventListener('DOMContentLoaded', async () => {
+            // Intentar cargar tasa inmediatamente
             await fetchDollarRate();
+            
+            // Renderizar datos guardados
             renderCatalog();
             renderMovements();
             renderCredits();
             renderSalesTable();
-            // Actualizar tasa cada 10 minutos
-            setInterval(fetchDollarRate, 600000);
+            
+            // Actualizar tasa cada 5 minutos automáticamente
+            setInterval(fetchDollarRate, 300000);
         });
 
-        // --- API DOLAR ---
+        // --- 3. API DOLAR VENEZUELA (CORREGIDA Y ROBUSTA) ---
         async function fetchDollarRate() {
+            const display = document.getElementById('tasa-display');
+            
             try {
-                const response = await fetch('https://ve.dolarapi.com/v1/dolares/promedio'); // Usamos promedio o oficial
+                display.innerText = "⏳ Buscando Tasa...";
+                
+                // Intento 1: DolarApi.com (Endpoint Oficial)
+                const response = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+                if (!response.ok) throw new Error('Error de conexión');
+                
                 const data = await response.json();
-                dollarRate = data.promedio;
-                document.getElementById('tasa-display').innerText = `Tasa: Bs ${dollarRate.toFixed(2)}`;
-                renderCatalog(); // Re-renderizar precios
-                renderCredits(); // Re-renderizar deudas en Bs
+                
+                if (data && data.promedio) {
+                    dollarRate = parseFloat(data.promedio);
+                    display.className = "badge bg-success fs-6"; // Verde si hay éxito
+                    display.innerText = `BCV: Bs ${dollarRate.toFixed(2)}`;
+                } else {
+                    throw new Error('Datos vacíos');
+                }
+
             } catch (error) {
-                console.error("Error API Dolar", error);
-                document.getElementById('tasa-display').innerText = "Tasa: Error API";
-                dollarRate = 50; // Fallback manual si falla
+                console.warn("Fallo API Automática, pidiendo manual...", error);
+                
+                // Si la API falla, usamos el valor que ya teníamos o pedimos manual
+                if (dollarRate === 0) {
+                    display.className = "badge bg-danger fs-6";
+                    display.innerText = "⚠️ Error API";
+                    
+                    const manualRate = await Swal.fire({
+                        title: 'Sin conexión al BCV',
+                        text: 'No se pudo obtener la tasa automática. Ingrese el precio del dólar manualmente:',
+                        input: 'text',
+                        inputLabel: 'Tasa BCV hoy (Ej: 60.5)',
+                        showCancelButton: false,
+                        allowOutsideClick: false,
+                        inputValidator: (value) => {
+                            if (!value || isNaN(value.replace(',','.'))) {
+                                return '¡Necesitas escribir un número válido!';
+                            }
+                        }
+                    });
+
+                    if (manualRate.isConfirmed) {
+                        dollarRate = parseFloat(manualRate.value.replace(',','.'));
+                        display.className = "badge bg-warning text-dark fs-6";
+                        display.innerText = `Tasa Manual: Bs ${dollarRate.toFixed(2)}`;
+                    }
+                }
             }
+            
+            // Actualizar precios visuales en todas las tablas
+            renderCatalog();
+            renderCredits();
+            renderCart();
         }
 
-        // --- NAVEGACIÓN ---
+        // --- 4. NAVEGACIÓN ENTRE PESTAÑAS ---
         function showSection(id) {
             document.querySelectorAll('.section-card').forEach(sec => sec.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            
+            // Actualizar clase active en navbar
             document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-            event.target.closest('.nav-link').classList.add('active');
+            event.currentTarget.classList.add('active'); // Corrección para seleccionar el link clickeado
         }
 
-        // --- ALMACÉN / INVENTARIO ---
+        // --- 5. LOGICA DE ALMACÉN ---
         function updateStock(type) {
-            const name = document.getElementById('inv-product').value;
+            const name = document.getElementById('inv-product').value.trim();
             const price = parseFloat(document.getElementById('inv-price').value) || 0;
-            const char = document.getElementById('inv-char').value;
+            const char = document.getElementById('inv-char').value.trim();
             const qty = parseInt(document.getElementById('inv-qty').value);
-            const resp = document.getElementById('inv-resp').value;
+            const resp = document.getElementById('inv-resp').value.trim();
 
-            if(!name || !qty || !resp) return Swal.fire('Error', 'Complete campos obligatorios', 'error');
+            if(!name || !qty || !resp) return Swal.fire('Faltan Datos', 'Nombre, Cantidad y Responsable son obligatorios', 'warning');
 
-            // Actualizar lista de productos
+            // Buscar si existe
             let prod = products.find(p => p.name.toLowerCase() === name.toLowerCase());
             
             if (type === 'ingreso') {
                 if(prod) {
                     prod.stock += qty;
-                    prod.price = price > 0 ? price : prod.price; // Actualizar precio si se provee
+                    // Actualizamos precio solo si ingresaron uno nuevo mayor a 0
+                    if (price > 0) prod.price = price;
+                    if (char) prod.char = char;
                 } else {
+                    if (price <= 0) return Swal.fire('Error', 'Producto nuevo requiere precio', 'error');
                     prod = { name, price, char, stock: qty };
                     products.push(prod);
                 }
             } else {
-                if(!prod || prod.stock < qty) return Swal.fire('Error', 'Stock insuficiente', 'error');
+                // Egreso
+                if(!prod) return Swal.fire('Error', 'El producto no existe', 'error');
+                if(prod.stock < qty) return Swal.fire('Stock Insuficiente', `Solo quedan ${prod.stock}`, 'error');
                 prod.stock -= qty;
             }
 
-            // Registrar Movimiento
+            // Registrar en Historial
             movements.push({
                 date: new Date().toLocaleString(),
                 responsible: resp,
                 type: type.toUpperCase(),
                 qty,
-                product: name,
-                char
+                product: name + (char ? ` (${char})` : '')
             });
 
             saveData();
             document.getElementById('inventory-form').reset();
-            Swal.fire('Éxito', `Inventario actualizado: ${type}`, 'success');
+            Swal.fire({
+                icon: 'success',
+                title: type === 'ingreso' ? 'Entrada Registrada' : 'Salida Registrada',
+                showConfirmButton: false,
+                timer: 1500
+            });
             renderCatalog();
             renderMovements();
         }
 
         function renderMovements() {
             const tbody = document.getElementById('movements-body');
-            tbody.innerHTML = movements.map(m => `
+            // Mostrar últimos 50 movimientos, los más recientes primero
+            const recentMovements = movements.slice(-50).reverse();
+            
+            tbody.innerHTML = recentMovements.map(m => `
                 <tr>
-                    <td>${m.date}</td>
+                    <td class="small">${m.date}</td>
                     <td>${m.responsible}</td>
-                    <td class="${m.type === 'INGRESO' ? 'text-success' : 'text-danger'}">${m.type}</td>
+                    <td><span class="badge ${m.type === 'INGRESO' ? 'bg-success' : 'bg-danger'}">${m.type}</span></td>
                     <td>${m.qty}</td>
                     <td>${m.product}</td>
-                    <td>${m.char || '-'}</td>
-                </tr>
-            `).reverse().join('');
-        }
-
-        // --- VENTAS (POS) ---
-        function renderCatalog() {
-            const search = document.getElementById('searchProduct').value.toLowerCase();
-            const tbody = document.getElementById('catalog-body');
-            tbody.innerHTML = products
-                .filter(p => p.name.toLowerCase().includes(search))
-                .map(p => `
-                <tr>
-                    <td>${p.name} <small class="text-muted">${p.char || ''}</small></td>
-                    <td class="${p.stock < 5 ? 'stock-warning' : ''}">${p.stock}</td>
-                    <td>$${p.price.toFixed(2)}</td>
-                    <td>Bs ${(p.price * dollarRate).toFixed(2)}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="addToCart('${p.name}')" ${p.stock <= 0 ? 'disabled' : ''}>
-                            <i class="bi bi-plus"></i>
-                        </button>
-                    </td>
                 </tr>
             `).join('');
         }
 
+        // --- 6. LÓGICA DE VENTAS (POS) ---
+        function renderCatalog() {
+            const search = document.getElementById('searchProduct').value.toLowerCase();
+            const tbody = document.getElementById('catalog-body');
+            
+            // Filtrar y ordenar alfabéticamente
+            const filtered = products
+                .filter(p => p.name.toLowerCase().includes(search))
+                .sort((a, b) => a.name.localeCompare(b.name));
+
+            tbody.innerHTML = filtered.map(p => {
+                const bsPrice = (p.price * dollarRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                const isLowStock = p.stock <= 5;
+                
+                return `
+                <tr class="${isLowStock ? 'table-warning' : ''}">
+                    <td>
+                        <strong>${p.name}</strong><br>
+                        <small class="text-muted">${p.char || ''}</small>
+                    </td>
+                    <td class="${isLowStock ? 'stock-warning' : ''} text-center fw-bold">${p.stock}</td>
+                    <td>$${p.price.toFixed(2)}</td>
+                    <td class="text-primary fw-bold">Bs ${bsPrice}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary rounded-circle" onclick="addToCart('${p.name}')" ${p.stock <= 0 ? 'disabled' : ''}>
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
         function addToCart(prodName) {
             const prod = products.find(p => p.name === prodName);
+            // Comprobar si ya está en el carrito
             const itemInCart = cart.find(i => i.name === prodName);
+            
+            // Calcular cantidad actual en carrito para no vender de más
+            const currentQtyInCart = itemInCart ? itemInCart.qty : 0;
 
-            if (prod.stock <= 0) return;
+            if (currentQtyInCart >= prod.stock) {
+                return Swal.fire('Stock Lleno', 'No tienes más unidades disponibles', 'warning');
+            }
 
             if (itemInCart) {
-                if (itemInCart.qty < prod.stock) itemInCart.qty++;
+                itemInCart.qty++;
             } else {
-                cart.push({ ...prod, qty: 1 });
+                cart.push({ ...prod, qty: 1 }); // Clonamos el objeto
             }
             renderCart();
         }
 
         function renderCart() {
             const list = document.getElementById('cart-list');
-            let total = 0;
-            list.innerHTML = cart.map((item, index) => {
-                total += item.price * item.qty;
-                return `
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <b>${item.name}</b> x${item.qty}
-                    </div>
-                    <span>$${(item.price * item.qty).toFixed(2)} 
-                        <i class="bi bi-trash text-danger ms-2" style="cursor:pointer" onclick="removeFromCart(${index})"></i>
-                    </span>
-                </li>`;
-            }).join('');
+            let totalUSD = 0;
+
+            if (cart.length === 0) {
+                list.innerHTML = '<div class="text-center text-muted p-3">Carrito vacío</div>';
+            } else {
+                list.innerHTML = cart.map((item, index) => {
+                    totalUSD += item.price * item.qty;
+                    return `
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-1">
+                        <div class="lh-1">
+                            <div class="fw-bold">${item.name}</div>
+                            <small class="text-muted">$${item.price} x ${item.qty}</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="fw-bold me-2">$${(item.price * item.qty).toFixed(2)}</span>
+                            <button class="btn btn-sm text-danger" onclick="removeFromCart(${index})"><i class="bi bi-x-circle-fill"></i></button>
+                        </div>
+                    </li>`;
+                }).join('');
+            }
             
-            document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
-            document.getElementById('cart-total-bs').innerText = `Bs ${(total * dollarRate).toFixed(2)}`;
+            document.getElementById('cart-total').innerText = `$${totalUSD.toFixed(2)}`;
+            const totalBs = (totalUSD * dollarRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('cart-total-bs').innerText = `Bs ${totalBs}`;
         }
 
         function removeFromCart(index) {
@@ -357,19 +460,25 @@
             renderCart();
         }
 
+        function toggleCreditWarning() {
+            const method = document.getElementById('paymentMethod').value;
+            if (method === 'Fiado') {
+                Swal.fire('Modo Fiado', 'Recuerda llenar Nombre y Teléfono obligatoriamente.', 'info');
+            }
+        }
+
         function processSale() {
-            if (cart.length === 0) return Swal.fire('Carrito vacío', 'Agregue productos', 'warning');
+            if (cart.length === 0) return Swal.fire('Carrito vacío', 'Agregue productos antes de cobrar', 'warning');
 
             const method = document.getElementById('paymentMethod').value;
-            const client = document.getElementById('clientName').value;
-            const phone = document.getElementById('clientPhone').value;
+            const client = document.getElementById('clientName').value.trim();
+            const phone = document.getElementById('clientPhone').value.trim();
             
-            // Validación para Fiado
             if (method === 'Fiado' && (!client || !phone)) {
-                return Swal.fire('Atención', 'Para fiar es obligatorio Nombre y Teléfono', 'warning');
+                return Swal.fire('Datos Faltantes', 'Para dar CRÉDITO (Fiado) necesitas Nombre y Teléfono del cliente.', 'error');
             }
 
-            // Descontar Stock
+            // 1. Descontar Inventario
             cart.forEach(item => {
                 const prod = products.find(p => p.name === item.name);
                 if(prod) prod.stock -= item.qty;
@@ -377,19 +486,19 @@
 
             const totalUSD = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
 
-            // Registrar Venta
+            // 2. Registrar Venta General
             const sale = {
-                date: new Date().toLocaleString(),
-                seller: 'Cajero Turno', // Idealmente vendría de un login
+                date: new Date().toLocaleTimeString(),
+                seller: 'Cajero', // Se podría mejorar con un login
                 items: cart.map(i => `${i.name} (${i.qty})`).join(', '),
-                client: client || 'Anónimo',
-                phone: phone || '-',
+                client: client || 'General',
+                phone: phone || '',
                 method: method,
                 total: totalUSD
             };
             sales.push(sale);
 
-            // Si es Fiado, agregar a Créditos
+            // 3. Si es Fiado, registrar deuda
             if (method === 'Fiado') {
                 cart.forEach(item => {
                     credits.push({
@@ -405,100 +514,141 @@
                 renderCredits();
             }
 
-            // Limpiar y Guardar
+            // 4. Limpieza y UI
             cart = [];
             document.getElementById('sale-form').reset();
+            document.getElementById('paymentMethod').value = "Efectivo"; // Reset select
             renderCart();
             renderCatalog();
             renderSalesTable();
             saveData();
 
-            Swal.fire('Venta Exitosa', `Total: $${totalUSD.toFixed(2)}`, 'success');
+            Swal.fire({
+                icon: 'success',
+                title: '¡Venta Procesada!',
+                text: `Cobrado: $${totalUSD.toFixed(2)}`,
+                timer: 2000,
+                showConfirmButton: false
+            });
         }
 
-        // --- FIADOS ---
+        // --- 7. CRÉDITOS Y FIADOS ---
         function renderCredits() {
             const tbody = document.getElementById('credits-body');
-            tbody.innerHTML = credits.map((c, i) => `
-                <tr class="${c.paid ? 'table-success' : ''}">
-                    <td>${c.debtor}</td>
-                    <td>${c.phone}</td>
-                    <td>${c.product} (x${c.qty || 1})</td>
+            const activeCredits = credits.filter(c => !c.paid); // Solo mostrar pendientes
+            
+            if (activeCredits.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No hay deudas pendientes 🎉</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = activeCredits.map((c, i) => {
+                // Encontrar el índice real en el array original para poder marcarlo
+                const realIndex = credits.indexOf(c);
+                const debtBs = (c.valUSD * dollarRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                return `
+                <tr>
+                    <td class="fw-bold text-uppercase">${c.debtor}</td>
+                    <td><a href="https://wa.me/58${c.phone.substring(1)}" target="_blank" class="text-decoration-none"><i class="bi bi-whatsapp text-success"></i> ${c.phone}</a></td>
+                    <td>${c.product} (x${c.qty})</td>
                     <td>$${c.valUSD.toFixed(2)}</td>
-                    <td>Bs ${(c.valUSD * dollarRate).toFixed(2)}</td>
-                    <td>${c.paid ? 'PAGADO' : 'PENDIENTE'}</td>
+                    <td class="text-danger fw-bold">Bs ${debtBs}</td>
+                    <td><span class="badge bg-warning text-dark">Pendiente</span></td>
                     <td>
-                        ${!c.paid ? `<button class="btn btn-sm btn-success" onclick="markPaid(${i})">Pagar</button>` : ''}
+                        <button class="btn btn-sm btn-success" onclick="markPaid(${realIndex})"><i class="bi bi-check-lg"></i> Pagar</button>
                     </td>
-                </tr>
-            `).join('');
+                </tr>`;
+            }).join('');
         }
 
         function markPaid(index) {
-            credits[index].paid = true;
-            credits[index].paidDate = new Date().toLocaleString();
-            saveData();
-            renderCredits();
+            Swal.fire({
+                title: '¿Confirmar Pago?',
+                text: `El cliente ${credits[index].debtor} está pagando esta deuda.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, registrar pago'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    credits[index].paid = true;
+                    credits[index].paidDate = new Date().toLocaleString();
+                    saveData();
+                    renderCredits();
+                    Swal.fire('Pagado', 'Deuda saldada correctamente', 'success');
+                }
+            });
         }
 
-        // --- CIERRE Y EXPORTACIÓN ---
+        // --- 8. REPORTES Y CIERRE ---
         function renderSalesTable() {
-            document.getElementById('sales-body').innerHTML = sales.map(s => `
+            const tbody = document.getElementById('sales-body');
+            // Ventas del día (últimas primero)
+            tbody.innerHTML = sales.slice().reverse().map(s => `
                 <tr>
                     <td>${s.date}</td>
                     <td>${s.seller}</td>
-                    <td>${s.items}</td>
+                    <td class="small text-truncate" style="max-width: 150px;">${s.items}</td>
                     <td>${s.client}</td>
-                    <td>${s.method}</td>
-                    <td>$${s.total.toFixed(2)}</td>
+                    <td><span class="badge bg-light text-dark border">${s.method}</span></td>
+                    <td class="fw-bold">$${s.total.toFixed(2)}</td>
                 </tr>
             `).join('');
         }
 
+        function exportTableToExcel(tableId, filename) {
+            let table = document.getElementById(tableId);
+            let wb = XLSX.utils.table_to_book(table);
+            XLSX.writeFile(wb, `${filename}_${getFormattedDate()}.xlsx`);
+        }
+
         function exportSales() {
-            if(sales.length === 0) return Swal.fire('Info', 'No hay ventas hoy', 'info');
+            if(sales.length === 0) return Swal.fire('Info', 'No hay ventas para exportar', 'info');
             const ws = XLSX.utils.json_to_sheet(sales);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Ventas");
-            XLSX.writeFile(wb, `Ventas_${new Date().toLocaleDateString().replace(/\//g,'-')}.xlsx`);
+            XLSX.writeFile(wb, `Ventas_${getFormattedDate()}.xlsx`);
         }
 
         function exportInventory() {
             const ws = XLSX.utils.json_to_sheet(products);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Inventario");
-            XLSX.writeFile(wb, `Stock_${new Date().toLocaleDateString().replace(/\//g,'-')}.xlsx`);
+            XLSX.writeFile(wb, `Inventario_${getFormattedDate()}.xlsx`);
         }
-        
-        function exportTableToExcel(tableId, filename) {
-            let table = document.getElementById(tableId);
-            let wb = XLSX.utils.table_to_book(table);
-            XLSX.writeFile(wb, filename + ".xlsx");
+
+        function getFormattedDate() {
+            const d = new Date();
+            return `${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`;
         }
 
         function closeRegister() {
             const resp = document.getElementById('close-resp').value;
-            if (!resp) return Swal.fire('Error', 'Ingrese el nombre del responsable', 'error');
+            if (!resp) return Swal.fire('Requiere Firma', 'Escriba el nombre del responsable para cerrar.', 'error');
 
             Swal.fire({
-                title: '¿Cerrar Caja?',
-                text: "Se exportarán las ventas y se reiniciará el contador diario.",
+                title: '¿Cerrar Caja Definitivamente?',
+                text: "Esto exportará el Excel de ventas y limpiará la lista de hoy.",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Sí, cerrar'
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'SÍ, CERRAR Y LIMPIAR'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    exportSales(); // Auto exportar
-                    sales = []; // Reset ventas
+                    exportSales(); // Descarga automática
+                    
+                    // Limpieza
+                    sales = []; 
                     document.getElementById('close-resp').value = '';
                     saveData();
                     renderSalesTable();
-                    Swal.fire('Caja Cerrada', `Responsable: ${resp}`, 'success');
+                    
+                    Swal.fire('Turno Cerrado', `Cierre realizado por: ${resp}`, 'success');
                 }
             });
         }
 
-        // --- PERSISTENCIA ---
+        // --- 9. PERSISTENCIA DE DATOS (LocalStorage) ---
         function saveData() {
             localStorage.setItem('nexus_products', JSON.stringify(products));
             localStorage.setItem('nexus_movements', JSON.stringify(movements));
